@@ -1,0 +1,68 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userController = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+const http_status_codes_1 = require("http-status-codes");
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const user_service_1 = require("./user.service");
+const createUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = req.body;
+    const result = yield user_service_1.userService.createUser(payload);
+    (0, sendResponse_1.default)(res, {
+        message: "user create Seccussfully",
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        success: true,
+        data: result,
+    });
+}));
+// create operator
+const createOperator = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = req.body;
+    const result = yield user_service_1.userService.createOperator(payload);
+    (0, sendResponse_1.default)(res, {
+        message: "Operator created Successfully",
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        success: true,
+        data: result,
+    });
+}));
+//get all user only admin
+const getAllUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userService.getAllUser();
+    (0, sendResponse_1.default)(res, {
+        message: "user get Seccussfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
+// block user
+const blockUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userService.blockUser(req.params.userId);
+    (0, sendResponse_1.default)(res, {
+        message: "user block Seccussfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
+exports.userController = {
+    createUser,
+    getAllUser,
+    blockUser,
+    createOperator,
+};
