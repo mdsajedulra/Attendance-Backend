@@ -17,11 +17,10 @@ const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./app/config"));
 function server() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(config_1.default.database_url);
         try {
             yield mongoose_1.default.connect(config_1.default.database_url);
-            const port = Number(config_1.default.port);
-            app_1.default.listen(port, "0.0.0.0", () => {
+            const port = process.env.PORT || config_1.default.port || 5000;
+            app_1.default.listen(Number(port), () => {
                 console.log(`Server running on port ${port}`);
             });
         }
