@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import mongoose, { Schema } from "mongoose";
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { IOperator, IUser } from "./user.interface";
 
 // user registratin schema

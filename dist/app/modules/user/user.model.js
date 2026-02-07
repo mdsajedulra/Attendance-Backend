@@ -48,7 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Operator = exports.User = void 0;
 /* eslint-disable @typescript-eslint/no-this-alias */
 const mongoose_1 = __importStar(require("mongoose"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 // user registratin schema
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
@@ -73,7 +73,7 @@ const OperatorSchema = new mongoose_1.Schema({
 UserSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = this;
-        user.password = yield bcrypt_1.default.hash(user.password, Number(process.env.bcrypt_salt_rounds));
+        user.password = yield bcryptjs_1.default.hash(user.password, Number(process.env.bcrypt_salt_rounds));
         next();
     });
 });

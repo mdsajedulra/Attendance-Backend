@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
 const user_model_1 = require("../user/user.model");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
 const register = (payload) => {
@@ -30,7 +30,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (userStatus) {
         throw new Error("User is Blocked");
     }
-    const isPasswordMatch = yield bcrypt_1.default.compare(payload.password, user === null || user === void 0 ? void 0 : user.password);
+    const isPasswordMatch = yield bcryptjs_1.default.compare(payload.password, user === null || user === void 0 ? void 0 : user.password);
     if (!isPasswordMatch) {
         throw new Error("Invalid Password");
     }
@@ -60,12 +60,12 @@ const changePassword = (userData, payload) => __awaiter(void 0, void 0, void 0, 
     }
     // console.log(user);
     // checking if the password is correct
-    const isPasswordMatch = yield bcrypt_1.default.compare(payload.oldPassword, user === null || user === void 0 ? void 0 : user.password);
+    const isPasswordMatch = yield bcryptjs_1.default.compare(payload.oldPassword, user === null || user === void 0 ? void 0 : user.password);
     console.log("password match", isPasswordMatch);
     if (!isPasswordMatch)
         throw new Error("Password do not matched");
     //hash new password
-    const newHashedPassword = yield bcrypt_1.default.hash(payload.newPassword, Number(config_1.default.bcrypt_salt_rounds));
+    const newHashedPassword = yield bcryptjs_1.default.hash(payload.newPassword, Number(config_1.default.bcrypt_salt_rounds));
     console.log(newHashedPassword);
     const updateP = yield user_model_1.User.findOneAndUpdate({
         email: userData.email,

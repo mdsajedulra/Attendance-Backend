@@ -1,7 +1,7 @@
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { ILoginUser } from "./auth.interface";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 
