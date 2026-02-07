@@ -32,7 +32,13 @@ const spotLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(spot);
     return spot[0];
 });
+// get all spots
+const getAllSpot = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield spot_model_1.default.find();
+    return result;
+});
 exports.spotService = {
     createSpot,
     spotLogin,
+    getAllSpot,
 };

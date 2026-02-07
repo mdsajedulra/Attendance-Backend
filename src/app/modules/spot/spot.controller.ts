@@ -27,8 +27,20 @@ const spotLogin = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
+// get all spot
+
+const getAllSpot = catchAsync(async (req, res, next) => {
+  const result = await spotService.getAllSpot();
+  sendResponse(res, {
+    message: "spot get successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
 
 export const spotController = {
   createSpot,
   spotLogin,
+  getAllSpot,
 };

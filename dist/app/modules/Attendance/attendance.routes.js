@@ -15,10 +15,14 @@ attendanceRoutes.get("/get-male", attendance_controller_1.attendanceController.g
 attendanceRoutes.post("/create-child", attendance_controller_1.attendanceController.createChildAttendance);
 attendanceRoutes.get("/get-last-child", attendance_controller_1.attendanceController.getLastChildAttendance);
 attendanceRoutes.get("/get-all-last-attendance", attendance_controller_1.attendanceController.getAllLastAttendance);
+// get all attendance
+attendanceRoutes.get("/get-all-attendance", attendance_controller_1.attendanceController.getAllAttendance);
 attendanceRoutes.get("/get-child", attendance_controller_1.attendanceController.getChildAttendance);
 // comment routes
 attendanceRoutes.post("/create-comment", attendance_controller_1.attendanceController.createComment);
 attendanceRoutes.get("/get-comment", attendance_controller_1.attendanceController.getComments);
+attendanceRoutes.delete("/:id", attendance_controller_1.attendanceController.deleteAttendance);
+attendanceRoutes.get("/missing", attendance_controller_1.attendanceController.missing);
 // attendanceRoutes.get("/current", attendanceController.getCurrentEntry);
 // attendanceRoutes.get("/", attendanceController.getSingleAttendance);
 exports.default = attendanceRoutes;

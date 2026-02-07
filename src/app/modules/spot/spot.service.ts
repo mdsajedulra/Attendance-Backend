@@ -21,7 +21,15 @@ const spotLogin = async (payload: ISpotLogin) => {
   return spot[0];
 };
 
+// get all spots
+
+const getAllSpot = async () => {
+  const result = await spotModel.find();
+  return result;
+};
+
 export const spotService = {
   createSpot,
   spotLogin,
+  getAllSpot,
 };

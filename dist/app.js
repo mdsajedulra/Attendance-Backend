@@ -12,10 +12,12 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const allowedOrigins = [
     "http://localhost:5173",
+    "http://localhost:3000",
     "http://localhost:8081",
     "http://192.168.0.105:8081",
     "http://192.168.0.105:19000",
     "http://192.168.0.105",
+    "https://admin-dashboard-gamma-inky-62.vercel.app",
     "*",
 ];
 app.use((0, cors_1.default)({

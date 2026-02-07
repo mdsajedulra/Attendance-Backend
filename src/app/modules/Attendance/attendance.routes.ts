@@ -41,6 +41,9 @@ attendanceRoutes.get(
   "/get-all-last-attendance",
   attendanceController.getAllLastAttendance
 );
+
+// get all attendance
+
 attendanceRoutes.get(
   "/get-all-attendance",
   attendanceController.getAllAttendance
@@ -50,6 +53,8 @@ attendanceRoutes.get("/get-child", attendanceController.getChildAttendance);
 // comment routes
 attendanceRoutes.post("/create-comment", attendanceController.createComment);
 attendanceRoutes.get("/get-comment", attendanceController.getComments);
+attendanceRoutes.delete("/:id", attendanceController.deleteAttendance);
+attendanceRoutes.get("/missing", attendanceController.missing);
 // attendanceRoutes.get("/current", attendanceController.getCurrentEntry);
 // attendanceRoutes.get("/", attendanceController.getSingleAttendance);
 

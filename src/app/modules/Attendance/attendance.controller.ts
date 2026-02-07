@@ -114,9 +114,7 @@ const getAllLastAttendance = catchAsync(async (req, res) => {
 });
 
 const getAllAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getAllAttendance(
-    req.query.spotId as unknown as ObjectId
-  );
+  const result = await attendanceService.getAllAttendance(req.query);
   sendResponse(res, {
     message: "All attendance fetched successfully",
     statusCode: StatusCodes.OK,
@@ -148,6 +146,29 @@ const getComments = catchAsync(async (req, res) => {
   });
 });
 
+// delete attendance
+
+const deleteAttendance = catchAsync(async (req, res) => {
+  console.log(req.params.id);
+  const result = await attendanceService.deleteAttendanceService(req.params.id);
+  sendResponse(res, {
+    message: "Delete Attendance Successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
+
+const missing = catchAsync(async (req, res) => {
+  const result = attendanceService.missing();
+  sendResponse(res, {
+    message: "get missing attendance",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
+
 export const attendanceController = {
   createFemaleAttendance,
   createMaleAttendance,
@@ -162,4 +183,6 @@ export const attendanceController = {
   getComments,
   getAllLastAttendance,
   getAllAttendance,
+  deleteAttendance,
+  missing,
 };

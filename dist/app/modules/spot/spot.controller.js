@@ -39,7 +39,18 @@ const spotLogin = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0
         data: result,
     });
 }));
+// get all spot
+const getAllSpot = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield spot_service_1.spotService.getAllSpot();
+    (0, sendResponse_1.default)(res, {
+        message: "spot get successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 exports.spotController = {
     createSpot,
     spotLogin,
+    getAllSpot,
 };

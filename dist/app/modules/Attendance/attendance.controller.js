@@ -113,6 +113,15 @@ const getAllLastAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(v
         data: result,
     });
 }));
+const getAllAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getAllAttendance(req.query);
+    (0, sendResponse_1.default)(res, {
+        message: "All attendance fetched successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 // comment controller
 const createComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
@@ -133,6 +142,26 @@ const getComments = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result,
     });
 }));
+// delete attendance
+const deleteAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.params.id);
+    const result = yield attendance_service_1.attendanceService.deleteAttendanceService(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        message: "Delete Attendance Successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
+const missing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = attendance_service_1.attendanceService.missing();
+    (0, sendResponse_1.default)(res, {
+        message: "get missing attendance",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 exports.attendanceController = {
     createFemaleAttendance,
     createMaleAttendance,
@@ -146,4 +175,7 @@ exports.attendanceController = {
     getChildAttendance,
     getComments,
     getAllLastAttendance,
+    getAllAttendance,
+    deleteAttendance,
+    missing,
 };
