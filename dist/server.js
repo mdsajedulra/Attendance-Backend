@@ -19,7 +19,7 @@ function server() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield mongoose_1.default.connect(config_1.default.database_url);
-            const port = process.env.PORT || config_1.default.port || 5000;
+            const port = process.env.PORT || config_1.default.port || 3000;
             app_1.default.listen(Number(port), () => {
                 console.log(`Server running on port ${port}`);
             });
