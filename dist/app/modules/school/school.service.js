@@ -12,33 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.spotService = void 0;
-const spot_model_1 = __importDefault(require("./spot.model"));
-const createSpot = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield spot_model_1.default.create(payload);
+exports.schoolService = void 0;
+const school_model_1 = __importDefault(require("./school.model"));
+const createSchool = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield school_model_1.default.create(payload);
     return result;
 });
-const spotLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const schoolLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(payload);
-    const spot = yield spot_model_1.default.find({
-        spotCode: payload.spotCode,
+    const school = yield school_model_1.default.find({
+        schoolCode: payload.schoolCode,
     });
-    if (spot.length === 0) {
-        throw new Error("Spot Not Found");
+    if (school.length === 0) {
+        throw new Error("School Not Found");
     }
-    if (spot[0].password !== payload.password) {
+    if (school[0].password !== payload.password) {
         throw new Error("Invalid Password");
     }
-    console.log(spot);
-    return spot[0];
+    console.log(school);
+    return school[0];
 });
-// get all spots
-const getAllSpot = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield spot_model_1.default.find();
+// get all schools
+const getAllSchool = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield school_model_1.default.find();
     return result;
 });
-exports.spotService = {
-    createSpot,
-    spotLogin,
-    getAllSpot,
+exports.schoolService = {
+    createSchool,
+    schoolLogin,
+    getAllSchool,
 };

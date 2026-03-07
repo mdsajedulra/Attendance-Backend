@@ -1,0 +1,35 @@
+import { ISchool, ISchoolLogin } from "./school.interface";
+import schoolModel from "./school.model";
+
+const createSchool = async (payload: ISchool) => {
+  const result = await schoolModel.create(payload);
+  return result;
+};
+const schoolLogin = async (payload: ISchoolLogin) => {
+  console.log(payload);
+  const school = await schoolModel.find({
+    schoolCode: payload.schoolCode,
+  });
+  if (school.length === 0) {
+    throw new Error("School Not Found");
+  }
+  if (school[0].password !== payload.password) {
+    throw new Error("Invalid Password");
+  }
+
+  console.log(school);
+  return school[0];
+};
+
+// get all schools
+
+const getAllSchool = async () => {
+  const result = await schoolModel.find();
+  return result;
+};
+
+export const schoolService = {
+  createSchool,
+  schoolLogin,
+  getAllSchool,
+};

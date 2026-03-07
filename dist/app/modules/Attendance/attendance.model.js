@@ -36,45 +36,45 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.attendanceModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const AttendanceSchema = new mongoose_1.Schema({
-    spotId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Spot", required: true },
-    female: { type: Number, required: true },
-    male: { type: Number, required: true },
-    child: { type: Number, required: true },
+    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
+    banana: { type: Number, required: true },
+    banruti: { type: Number, required: true },
+    egg: { type: Number, required: true },
     notes: { type: String },
 }, {
     timestamps: true, // createdAt, updatedAt
 });
-const FemaleAttendanceSchema = new mongoose_1.Schema({
-    spotId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Spot", required: true },
-    female: { type: Number, required: true },
+const BananaAttendanceSchema = new mongoose_1.Schema({
+    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
+    banana: { type: Number, required: true },
 }, {
     timestamps: true, // createdAt, updatedAt
 });
-const MaleAttendanceSchema = new mongoose_1.Schema({
-    spotId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Spot", required: true },
-    male: { type: Number, required: true },
+const BanrutiAttendanceSchema = new mongoose_1.Schema({
+    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
+    banruti: { type: Number, required: true },
 }, {
     timestamps: true, // createdAt, updatedAt
 });
-const ChildAttendanceSchema = new mongoose_1.Schema({
-    spotId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Spot", required: true },
-    child: { type: Number, required: true },
+const EggAttendanceSchema = new mongoose_1.Schema({
+    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
+    egg: { type: Number, required: true },
 }, {
     timestamps: true, // createdAt, updatedAt
 });
 const CommentSchema = new mongoose_1.Schema({
-    spotId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Spot", required: true },
+    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
     comment: { type: String, required: true },
 }, {
     timestamps: true, // createdAt, updatedAt
 });
-const femaleAttendance = mongoose_1.default.model("FemaleAttendance", FemaleAttendanceSchema);
-const maleAttendance = mongoose_1.default.model("MaleAttendance", MaleAttendanceSchema);
-const childAttendance = mongoose_1.default.model("ChildAttendance", ChildAttendanceSchema);
+const BananaAttendance = mongoose_1.default.model("BananaAttendance", BananaAttendanceSchema);
+const banrutiAttendance = mongoose_1.default.model("BanrutiAttendance", BanrutiAttendanceSchema);
+const eggAttendance = mongoose_1.default.model("EggAttendance", EggAttendanceSchema);
 const commentModel = mongoose_1.default.model("Comment", CommentSchema);
 exports.attendanceModel = {
-    femaleAttendance,
-    maleAttendance,
-    childAttendance,
+    BananaAttendance,
+    banrutiAttendance,
+    eggAttendance,
     commentModel,
 };

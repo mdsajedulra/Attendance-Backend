@@ -17,95 +17,95 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const attendance_service_1 = require("./attendance.service");
-// female attendance controller
-const createFemaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// banana attendance controller
+const createBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createFemaleAttendance(payload);
+    const result = yield attendance_service_1.attendanceService.createBananaAttendance(payload);
     (0, sendResponse_1.default)(res, {
-        message: "Female attendance recorded successfully",
+        message: "banana attendance recorded successfully",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
 }));
-const getLastFemaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastFemaleAttendance();
+const getLastBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getLastBananaAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Last female attendance fetched successfully",
+        message: "Last banana attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-const getFemaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getFemaleAttendance();
+const getBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getBananaAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Female attendance fetched successfully",
+        message: "banana attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-// create male attendance
-const createMaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// create banruti attendance
+const createBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createMaleAttendance(payload);
+    const result = yield attendance_service_1.attendanceService.createBanrutiAttendance(payload);
     (0, sendResponse_1.default)(res, {
-        message: "Male attendance recorded successfully",
+        message: "Banruti attendance recorded successfully",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
 }));
-const getLastMaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastMaleAttendance();
+const getLastBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getLastBanrutiAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Last male attendance fetched successfully",
+        message: "Last banruti attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-const getMaleAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getMaleAttendance();
+const getBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getBanrutiAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Male attendance fetched successfully",
+        message: "Banruti attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-// child attendance controller
-const createChildAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// egg attendance controller
+const createEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createChildAttendance(payload);
+    const result = yield attendance_service_1.attendanceService.createEggAttendance(payload);
     (0, sendResponse_1.default)(res, {
-        message: "Child attendance recorded successfully",
+        message: "Egg attendance recorded successfully",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
 }));
-const getLastChildAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastChildAttendance();
+const getLastEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getLastEggAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Last child attendance fetched successfully",
+        message: "Last egg attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-const getChildAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getChildAttendance();
+const getEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getEggAttendance();
     (0, sendResponse_1.default)(res, {
-        message: "Child attendance fetched successfully",
+        message: "Egg attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
 const getAllLastAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getAllLastAttendance(req.query.spotId);
+    const result = yield attendance_service_1.attendanceService.getAllLastAttendance(req.query.schoolId);
     (0, sendResponse_1.default)(res, {
         message: "All last attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -163,16 +163,16 @@ const missing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0
     });
 }));
 exports.attendanceController = {
-    createFemaleAttendance,
-    createMaleAttendance,
-    createChildAttendance,
+    createBananaAttendance,
+    createBanrutiAttendance,
+    createEggAttendance,
     createComment,
-    getLastFemaleAttendance,
-    getLastMaleAttendance,
-    getLastChildAttendance,
-    getFemaleAttendance,
-    getMaleAttendance,
-    getChildAttendance,
+    getLastBananaAttendance,
+    getLastBanrutiAttendance,
+    getLastEggAttendance,
+    getBananaAttendance,
+    getBanrutiAttendance,
+    getEggAttendance,
     getComments,
     getAllLastAttendance,
     getAllAttendance,

@@ -12,45 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.spotController = void 0;
+exports.schoolController = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const spot_service_1 = require("./spot.service");
-const createSpot = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const school_service_1 = require("./school.service");
+const createSchool = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
-    const result = yield spot_service_1.spotService.createSpot(payload);
+    const result = yield school_service_1.schoolService.createSchool(payload);
     (0, sendResponse_1.default)(res, {
-        message: "Spot created Successfully",
+        message: "School created Successfully",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
 }));
-// spot login
-const spotLogin = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+// school login
+const schoolLogin = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
     // console.log(payload);
-    const result = yield spot_service_1.spotService.spotLogin(payload);
+    const result = yield school_service_1.schoolService.schoolLogin(payload);
     (0, sendResponse_1.default)(res, {
-        message: "Spot logged in Successfully",
+        message: "School logged in Successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-// get all spot
-const getAllSpot = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield spot_service_1.spotService.getAllSpot();
+// get all school
+const getAllSchool = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield school_service_1.schoolService.getAllSchool();
     (0, sendResponse_1.default)(res, {
-        message: "spot get successfully",
+        message: "school get successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-exports.spotController = {
-    createSpot,
-    spotLogin,
-    getAllSpot,
+exports.schoolController = {
+    createSchool,
+    schoolLogin,
+    getAllSchool,
 };

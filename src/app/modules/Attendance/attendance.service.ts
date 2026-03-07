@@ -4,7 +4,8 @@ import moment from "moment-timezone";
 
 import { IComment } from "./attendance.interface";
 import { attendanceModel } from "./attendance.model";
-import spotModel from "../spot/spot.model";
+import schoolModel from "../school/school.model";
+
 
 // sajed
 
@@ -15,11 +16,11 @@ interface IAddress {
   district?: string;
 }
 
-// Spot Document Interface
-interface ISpot extends Document {
+// School Document Interface
+interface ISchool extends Document {
   _id: Types.ObjectId;
-  spotName: string;
-  spotCode: string;
+  schoolName: string;
+  schoolCode: string;
   concernMobileNumber?: string;
   address?: IAddress;
   // Add other fields as needed
@@ -28,24 +29,24 @@ interface ISpot extends Document {
 // Base Attendance Document Interface
 interface IAttendanceBase extends Document {
   _id: Types.ObjectId;
-  spotId: ISpot; // Populated Spot Document
+  schoolId: ISchool; // Populated School Document
   createdAt: Date;
   updatedAt: Date;
   __v: number;
 }
 
 // Specific Attendance Interfaces
-interface IFemaleAttendance extends IAttendanceBase {
+interface IBananaAttendance extends IAttendanceBase {
   toObject(): any;
-  female: number;
+  banana: number;
 }
-interface IMaleAttendance extends IAttendanceBase {
+interface IBanrutiAttendance extends IAttendanceBase {
   toObject(): any;
-  male: number;
+  banruti: number;
 }
-interface IChildAttendance extends IAttendanceBase {
+interface IEggAttendance extends IAttendanceBase {
   toObject(): any;
-  child: number;
+  egg: number;
 }
 
 // Placeholder for Mongoose Models
@@ -53,7 +54,7 @@ interface IChildAttendance extends IAttendanceBase {
 
 // Input Payload Interface
 interface IPayload {
-  spotCode?: string;
+  schoolCode?: string;
   concernMobileNumber?: string;
   village?: string;
   union?: string;
@@ -62,7 +63,7 @@ interface IPayload {
   date?: string; // Single date 'YYYY-MM-DD'
   startDate?: string;
   endDate?: string;
-  attendanceType?: "female" | "male" | "child";
+  attendanceType?: "banana" | "banruti" | "egg";
 }
 
 // const createAttendance = async (payload: IAttendance) => {
@@ -72,7 +73,7 @@ interface IPayload {
 //   const todayEnd = new Date();
 //   todayEnd.setHours(23, 59, 59, 999);
 //   const existing = await attendanceModel.findOne({
-//     spotId: new mongoose.Types.ObjectId(payload.spotId),
+//     schoolId: new mongoose.Types.ObjectId(payload.schoolId),
 //     createdAt: { $gte: todayStart, $lte: todayEnd },
 //   });
 
@@ -90,44 +91,44 @@ interface IPayload {
 //   const todayEnd = new Date();
 //   todayEnd.setHours(23, 59, 59, 999);
 //   const existing = await attendanceModel.findOne({
-//     spotId: new mongoose.Types.ObjectId(payload),
+//     schoolId: new mongoose.Types.ObjectId(payload),
 //     createdAt: { $gte: todayStart, $lte: todayEnd },
 //   });
 //   return existing;
 // };
 
 // get singl attendance
-// const getSingleAttendance = async (payload: { spotId: string }) => {
+// const getSingleAttendance = async (payload: { schoolId: string }) => {
 //   const attendances = await attendanceModel.findOne({
-//     spotId: new mongoose.Types.ObjectId(payload.spotId),
+//     schoolId: new mongoose.Types.ObjectId(payload.schoolId),
 //   });
 //   return attendances;
 // };
 
-// post female attendance
+// post banana attendance
 
-// female attendance services
-const createFemaleAttendance = async (payload: IFemaleAttendance) => {
+// banana attendance services
+const createBananaAttendance = async (payload: IBananaAttendance) => {
   const todayStart = moment().tz("Asia/Dhaka").startOf("day").toDate();
   const todayEnd = moment().tz("Asia/Dhaka").endOf("day").toDate();
-  const existing = await attendanceModel.femaleAttendance.findOne({
-    spotId:
-      payload.spotId instanceof mongoose.Types.ObjectId
-        ? payload.spotId
-        : new mongoose.Types.ObjectId(payload.spotId as any),
+  const existing = await attendanceModel.BananaAttendance.findOne({
+    schoolId:
+      payload.schoolId instanceof mongoose.Types.ObjectId
+        ? payload.schoolId
+        : new mongoose.Types.ObjectId(payload.schoolId as any),
     createdAt: { $gte: todayStart, $lte: todayEnd },
   });
   if (existing) {
     throw new Error("আজ ইতিমধ্যেই আপনার স্কুলের তথ্য সাবমিট করা হয়েছে।");
   }
-  const result = await attendanceModel.femaleAttendance.create(payload);
+  const result = await attendanceModel.BananaAttendance.create(payload);
   return result;
 };
 
-const getLastFemaleAttendance = async () => {
+const getLastBananaAttendance = async () => {
   let result;
   try {
-    result = await attendanceModel.femaleAttendance
+    result = await attendanceModel.BananaAttendance
       .findOne()
       .sort({ createdAt: -1 });
 
@@ -142,33 +143,33 @@ const getLastFemaleAttendance = async () => {
   return result;
 };
 
-const getFemaleAttendance = async () => {
-  const result = await attendanceModel.femaleAttendance.find();
+const getBananaAttendance = async () => {
+  const result = await attendanceModel.BananaAttendance.find();
   return result;
 };
-// create male attendance services
+// create banruti attendance services
 
-const createMaleAttendance = async (payload: IFemaleAttendance) => {
+const createBanrutiAttendance = async (payload: IBananaAttendance) => {
   const todayStart = moment().tz("Asia/Dhaka").startOf("day").toDate();
   const todayEnd = moment().tz("Asia/Dhaka").endOf("day").toDate();
-  const existing = await attendanceModel.maleAttendance.findOne({
-    spotId:
-      payload.spotId instanceof mongoose.Types.ObjectId
-        ? payload.spotId
-        : new mongoose.Types.ObjectId(payload.spotId as any),
+  const existing = await attendanceModel.banrutiAttendance.findOne({
+    schoolId:
+      payload.schoolId instanceof mongoose.Types.ObjectId
+        ? payload.schoolId
+        : new mongoose.Types.ObjectId(payload.schoolId as any),
     createdAt: { $gte: todayStart, $lte: todayEnd },
   });
   if (existing) {
     throw new Error("আজ ইতিমধ্যেই আপনার স্কুলের তথ্য সাবমিট করা হয়েছে।");
   }
-  const result = await attendanceModel.maleAttendance.create(payload);
+  const result = await attendanceModel.banrutiAttendance.create(payload);
   return result;
 };
 
-const getLastMaleAttendance = async () => {
+const getLastBanrutiAttendance = async () => {
   let result;
   try {
-    result = await attendanceModel.maleAttendance
+    result = await attendanceModel.banrutiAttendance
       .findOne()
       .sort({ createdAt: -1 });
 
@@ -183,32 +184,32 @@ const getLastMaleAttendance = async () => {
   return result;
 };
 
-const getMaleAttendance = async () => {
-  const result = await attendanceModel.maleAttendance.find();
+const getBanrutiAttendance = async () => {
+  const result = await attendanceModel.banrutiAttendance.find();
   return result;
 };
-// create child attendance services
+// create egg attendance services
 
-const createChildAttendance = async (payload: IFemaleAttendance) => {
+const createEggAttendance = async (payload: IBananaAttendance) => {
   const todayStart = moment().tz("Asia/Dhaka").startOf("day").toDate();
   const todayEnd = moment().tz("Asia/Dhaka").endOf("day").toDate();
-  const existing = await attendanceModel.childAttendance.findOne({
-    spotId:
-      payload.spotId instanceof mongoose.Types.ObjectId
-        ? payload.spotId
-        : new mongoose.Types.ObjectId(payload.spotId as any),
+  const existing = await attendanceModel.eggAttendance.findOne({
+    schoolId:
+      payload.schoolId instanceof mongoose.Types.ObjectId
+        ? payload.schoolId
+        : new mongoose.Types.ObjectId(payload.schoolId as any),
     createdAt: { $gte: todayStart, $lte: todayEnd },
   });
   if (existing) {
     throw new Error("আজ ইতিমধ্যেই আপনার স্কুলের তথ্য সাবমিট করা হয়েছে।");
   }
-  const result = await attendanceModel.childAttendance.create(payload);
+  const result = await attendanceModel.eggAttendance.create(payload);
   return result;
 };
-const getLastChildAttendance = async () => {
+const getLastEggAttendance = async () => {
   let result;
   try {
-    result = await attendanceModel.childAttendance
+    result = await attendanceModel.eggAttendance
       .findOne()
       .sort({ createdAt: -1 });
   } catch (error) {
@@ -217,33 +218,33 @@ const getLastChildAttendance = async () => {
   return result;
 };
 
-const getChildAttendance = async () => {
-  const result = await attendanceModel.childAttendance.find();
+const getEggAttendance = async () => {
+  const result = await attendanceModel.eggAttendance.find();
   return result;
 };
 
 const getAllLastAttendance = async (payload: ObjectId) => {
   console.log(payload);
-  const lastFemale = await attendanceModel.femaleAttendance
-    .findOne({ spotId: payload })
+  const lastBanana = await attendanceModel.BananaAttendance
+    .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });
-  const lastMale = await attendanceModel.maleAttendance
-    .findOne({ spotId: payload })
+  const lastBanruti = await attendanceModel.banrutiAttendance
+    .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });
-  const lastChild = await attendanceModel.childAttendance
-    .findOne({ spotId: payload })
+  const lastEgg = await attendanceModel.eggAttendance
+    .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });
 
-  return [{ lastFemale: lastFemale, lastMale: lastMale, lastChild: lastChild }];
+  return [{ lastBanana: lastBanana, lastBanruti: lastBanruti, lastEgg: lastEgg }];
 };
 const getAllAttendance = async (payload: IPayload) => {
   // -----------------------------
-  // 1️⃣ Build Spot Filters
+  // 1️⃣ Build School Filters
   // -----------------------------
-  const buildSpotFilter = (query: IPayload) => {
+  const buildSchoolFilter = (query: IPayload) => {
     const filter: any = {};
 
-    if (query.spotCode) filter.spotCode = query.spotCode;
+    if (query.schoolCode) filter.schoolCode = query.schoolCode;
     if (query.concernMobileNumber)
       filter.concernMobileNumber = query.concernMobileNumber;
 
@@ -255,19 +256,19 @@ const getAllAttendance = async (payload: IPayload) => {
     return filter;
   };
 
-  const spotFilter = buildSpotFilter(payload);
+  const schoolFilter = buildSchoolFilter(payload);
 
   // -----------------------------
-  // 2️⃣ Find spots based on filter
+  // 2️⃣ Find schools based on filter
   // -----------------------------
-  const matchedSpots = await spotModel.find(spotFilter);
+  const matchedSchools = await schoolModel.find(schoolFilter);
 
-  const spotIds = matchedSpots.map((s) => s._id);
+  const schoolIds = matchedSchools.map((s) => s._id);
 
-  if (spotIds.length === 0 && Object.keys(spotFilter).length > 0) {
+  if (schoolIds.length === 0 && Object.keys(schoolFilter).length > 0) {
     return {
       success: true,
-      message: "No spots found matching the criteria.",
+      message: "No schools found matching the criteria.",
       data: [],
     };
   }
@@ -305,7 +306,7 @@ const getAllAttendance = async (payload: IPayload) => {
       }
     }
 
-    // Set a default date if no date filter is present (for missing spots logic)
+    // Set a default date if no date filter is present (for missing schools logic)
     if (!dateFilter.createdAt) {
       targetDateString = new Date().toISOString().split("T")[0];
     }
@@ -316,46 +317,46 @@ const getAllAttendance = async (payload: IPayload) => {
   const { dateFilter, targetDateString } = buildDateFilter();
 
   // -----------------------------
-  // 4️⃣ Fetch female, male, child
+  // 4️⃣ Fetch banana, banruti, egg
   // -----------------------------
   const { attendanceType } = payload;
 
-  let female: IFemaleAttendance[] = [];
-  let male: IMaleAttendance[] = [];
-  let child: IChildAttendance[] = [];
+  let banana: IBananaAttendance[] = [];
+  let banruti: IBanrutiAttendance[] = [];
+  let egg: IEggAttendance[] = [];
 
-  const baseQuery = { spotId: { $in: spotIds }, ...dateFilter };
+  const baseQuery = { schoolId: { $in: schoolIds }, ...dateFilter };
   const sortOption = { createdAt: "descending" as const };
 
   const fetchPromises = [];
 
-  if (!attendanceType || attendanceType === "female") {
+  if (!attendanceType || attendanceType === "banana") {
     fetchPromises.push(
-      attendanceModel.femaleAttendance
+      attendanceModel.BananaAttendance
         .find(baseQuery)
-        .populate("spotId")
+        .populate("schoolId")
         .sort(sortOption)
     );
   } else {
     fetchPromises.push(Promise.resolve([]));
   }
 
-  if (!attendanceType || attendanceType === "male") {
+  if (!attendanceType || attendanceType === "banruti") {
     fetchPromises.push(
-      attendanceModel.maleAttendance
+      attendanceModel.banrutiAttendance
         .find(baseQuery)
-        .populate("spotId")
+        .populate("schoolId")
         .sort(sortOption)
     );
   } else {
     fetchPromises.push(Promise.resolve([]));
   }
 
-  if (!attendanceType || attendanceType === "child") {
+  if (!attendanceType || attendanceType === "egg") {
     fetchPromises.push(
-      attendanceModel.childAttendance
+      attendanceModel.eggAttendance
         .find(baseQuery)
-        .populate("spotId")
+        .populate("schoolId")
         .sort(sortOption)
     );
   } else {
@@ -363,66 +364,66 @@ const getAllAttendance = async (payload: IPayload) => {
   }
 
   // Use Promise.all to fetch data concurrently
-  [female, male, child] = (await Promise.all(fetchPromises)) as unknown as [
-    IFemaleAttendance[],
-    IMaleAttendance[],
-    IChildAttendance[]
+  [banana, banruti, egg] = (await Promise.all(fetchPromises)) as unknown as [
+    IBananaAttendance[],
+    IBanrutiAttendance[],
+    IEggAttendance[]
   ];
 
   // -----------------------------
   // 5️⃣ Merge all attendance
   // -----------------------------
   const all: any[] = [
-    ...female.map((i) => ({
+    ...banana.map((i) => ({
       ...i.toObject(),
-      type: "female",
-      count: i.female,
+      type: "banana",
+      count: i.banana,
       recordId: i._id,
     })),
-    ...male.map((i) => ({
+    ...banruti.map((i) => ({
       ...i.toObject(),
-      type: "male",
-      count: i.male,
+      type: "banruti",
+      count: i.banruti,
       recordId: i._id,
     })),
-    ...child.map((i) => ({
+    ...egg.map((i) => ({
       ...i.toObject(),
-      type: "child",
-      count: i.child,
+      type: "egg",
+      count: i.egg,
       recordId: i._id,
     })),
   ];
 
   // -----------------------------
-  // 6️⃣ Grouping by date + spot (Aggregates the counts)
+  // 6️⃣ Grouping by date + school (Aggregates the counts)
   // -----------------------------
   const grouped: any = {};
 
-  interface ISpotObj extends ISpot {}
+  interface ISchoolObj extends ISchool {}
 
   all.forEach((item) => {
     // Assuming item.createdAt is a Date object from Mongoose
     const date = item.createdAt.toISOString().split("T")[0];
-    const spotObj: ISpotObj = item.spotId;
-    const key = `${date}-${spotObj._id.toString()}`;
+    const schoolObj: ISchoolObj = item.schoolId;
+    const key = `${date}-${schoolObj._id.toString()}`;
 
     if (!grouped[key]) {
       grouped[key] = {
         date,
-        spotId: spotObj._id.toString(),
-        spotName: spotObj.spotName,
-        spotCode: spotObj.spotCode,
-        concernMobileNumber: spotObj.concernMobileNumber || null,
+        schoolId: schoolObj._id.toString(),
+        schoolName: schoolObj.schoolName,
+        schoolCode: schoolObj.schoolCode,
+        concernMobileNumber: schoolObj.concernMobileNumber || null,
         address: {
-          village: spotObj.address?.village || "",
-          union: spotObj.address?.union || "",
-          upozila: spotObj.address?.upozila || "",
-          district: spotObj.address?.district || "",
+          village: schoolObj.address?.village || "",
+          union: schoolObj.address?.union || "",
+          upozila: schoolObj.address?.upozila || "",
+          district: schoolObj.address?.district || "",
         },
-        female: 0,
-        male: 0,
-        child: 0,
-        spotDetails: spotObj,
+        banana: 0,
+        banruti: 0,
+        egg: 0,
+        schoolDetails: schoolObj,
         attendanceIds: [],
         isMissing: false, // Default to false
       };
@@ -438,56 +439,56 @@ const getAllAttendance = async (payload: IPayload) => {
   // ----------------------------------------------------
 
   // 7️⃣a. ওই দিনের জন্য যে সমস্ত স্পট অ্যাটেনডেন্স জমা দিয়েছে তাদের ID গুলি বের করা
-  const submittedSpotIds = Object.values(grouped).map(
-    (item: any) => item.spotId
+  const submittedSchoolIds = Object.values(grouped).map(
+    (item: any) => item.schoolId
   );
 
-  // 7️⃣b. Master Spot List থেকে সেই স্পটগুলো খুঁজে বের করা, যারা কোনো ডেটাই জমা দেয়নি
-  const completelyMissingSpots = matchedSpots.filter(
-    (spot) => !submittedSpotIds.includes(spot._id.toString())
+  // 7️⃣b. Master School List থেকে সেই স্পটগুলো খুঁজে বের করা, যারা কোনো ডেটাই জমা দেয়নি
+  const completelyMissingSchools = matchedSchools.filter(
+    (school) => !submittedSchoolIds.includes(school._id.toString())
   );
 
   // 7️⃣c. মিসিং স্পটগুলিকে final report-এর ফরম্যাটে তৈরি করা
-  const missingSpotsData = completelyMissingSpots.map((spot) => {
+  const missingSchoolsData = completelyMissingSchools.map((school) => {
     return {
       // Use the determined single date string from step 3
       date: targetDateString,
-      spotId: spot._id.toString(),
-      spotName: spot.spotName,
-      spotCode: spot.spotCode,
-      concernMobileNumber: spot.concernMobileNumber || null,
+      schoolId: school._id.toString(),
+      schoolName: school.schoolName,
+      schoolCode: school.schoolCode,
+      concernMobileNumber: school.concernMobileNumber || null,
       address: {
-        village: spot.address?.village || "",
-        union: spot.address?.union || "",
-        upozila: spot.address?.upozila || "",
-        district: spot.address?.district || "",
+        village: school.address?.village || "",
+        union: school.address?.union || "",
+        upozila: school.address?.upozila || "",
+        district: school.address?.district || "",
       },
-      female: 0, // Missing means 0 count
-      male: 0, // Missing means 0 count
-      child: 0, // Missing means 0 count
-      spotDetails: spot,
+      banana: 0, // Missing means 0 count
+      banruti: 0, // Missing means 0 count
+      egg: 0, // Missing means 0 count
+      schoolDetails: school,
       attendanceIds: [],
       isMissing: true, // Key field to identify missing entries
     };
   });
 
   // -----------------------------
-  // 8️⃣ Return final grouped output including missing spots
+  // 8️⃣ Return final grouped output including missing schools
   // -----------------------------
 
   // চূড়ান্ত রিপোর্ট: জমা পড়া ডেটা + মিসিং স্পট ডেটা
-  const finalData = [...Object.values(grouped), ...missingSpotsData];
+  const finalData = [...Object.values(grouped), ...missingSchoolsData];
 
   return {
     success: true,
-    message: "All attendance and missing spots fetched successfully",
+    message: "All attendance and missing schools fetched successfully",
     data: finalData,
   };
 };
 
 // create comment service
 
-async function createComment(payload: IFemaleAttendance) {
+async function createComment(payload: IBananaAttendance) {
   const result = await attendanceModel.commentModel;
   return result;
 }
@@ -499,34 +500,34 @@ const getComments = async () => {
 
 const deleteAttendanceService = async (id: string) => {
   console.log(id);
-  const existFemale = await attendanceModel.femaleAttendance.find({ _id: id });
-  if (existFemale) {
+  const existBanana = await attendanceModel.BananaAttendance.find({ _id: id });
+  if (existBanana) {
     console.log("find something");
   }
-  if (!existFemale) {
+  if (!existBanana) {
     console.log("kisui pailam na");
   }
-  console.log(existFemale);
+  console.log(existBanana);
 };
 
 const missing = async () => {
-  const result = await spotModel.find({spotCode: "55"});
-  const maleAttendance = await attendanceModel.maleAttendance.find({spotId: result[0]._id});
-  console.log(maleAttendance);
+  const result = await schoolModel.find({schoolCode: "55"});
+  const banrutiAttendance = await attendanceModel.banrutiAttendance.find({schoolId: result[0]._id});
+  console.log(banrutiAttendance);
   // console.log(result);
 };
 
 export const attendanceService = {
-  createFemaleAttendance,
-  createMaleAttendance,
-  createChildAttendance,
+  createBananaAttendance,
+  createBanrutiAttendance,
+  createEggAttendance,
   createComment,
-  getLastFemaleAttendance,
-  getLastMaleAttendance,
-  getLastChildAttendance,
-  getFemaleAttendance,
-  getMaleAttendance,
-  getChildAttendance,
+  getLastBananaAttendance,
+  getLastBanrutiAttendance,
+  getLastEggAttendance,
+  getBananaAttendance,
+  getBanrutiAttendance,
+  getEggAttendance,
   getComments,
   getAllLastAttendance,
   getAllAttendance,

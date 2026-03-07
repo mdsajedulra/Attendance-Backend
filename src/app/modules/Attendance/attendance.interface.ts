@@ -1,28 +1,28 @@
 export interface IAttendance {
-  spotId: string;
-  female: number;
-  male: number;
-  child: number;
+  schoolId: string;
+  banana: number;
+  banruti: number;
+  egg: number;
   notes?: string;
   timestamp?: Date;
 }
-export interface IFemaleAttendance {
-  spotId: string;
-  female: number;
+export interface IBananaAttendance {
+  schoolId: string;
+  banana: number;
   timestamp?: Date;
 }
-export interface IMaleAttendance {
-  spotId: string;
-  male: number;
+export interface IBanrutiAttendance {
+  schoolId: string;
+  banruti: number;
   timestamp?: Date;
 }
-export interface IChildAttendance {
-  spotId: string;
-  child: number;
+export interface IEggAttendance {
+  schoolId: string;
+  egg: number;
   timestamp?: Date;
 }
 export interface IComment {
-  spotId: string;
+  schoolId: string;
   comment: string;
   timestamp?: Date;
 }

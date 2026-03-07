@@ -1,17 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 import {
-  IChildAttendance,
+  IEggAttendance,
   IComment,
-  IFemaleAttendance,
-  IMaleAttendance,
+  IBananaAttendance,
+  IBanrutiAttendance,
 } from "./attendance.interface";
 
 const AttendanceSchema: Schema = new Schema(
   {
-    spotId: { type: Schema.Types.ObjectId, ref: "Spot", required: true },
-    female: { type: Number, required: true },
-    male: { type: Number, required: true },
-    child: { type: Number, required: true },
+    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
+    banana: { type: Number, required: true },
+    banruti: { type: Number, required: true },
+    egg: { type: Number, required: true },
     notes: { type: String },
   },
   {
@@ -19,30 +19,30 @@ const AttendanceSchema: Schema = new Schema(
   }
 );
 
-const FemaleAttendanceSchema: Schema = new Schema(
+const BananaAttendanceSchema: Schema = new Schema(
   {
-    spotId: { type: Schema.Types.ObjectId, ref: "Spot", required: true },
-    female: { type: Number, required: true },
+    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
+    banana: { type: Number, required: true },
   },
   {
     timestamps: true, // createdAt, updatedAt
   }
 );
 
-const MaleAttendanceSchema: Schema = new Schema(
+const BanrutiAttendanceSchema: Schema = new Schema(
   {
-    spotId: { type: Schema.Types.ObjectId, ref: "Spot", required: true },
-    male: { type: Number, required: true },
+    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
+    banruti: { type: Number, required: true },
   },
   {
     timestamps: true, // createdAt, updatedAt
   }
 );
 
-const ChildAttendanceSchema: Schema = new Schema(
+const EggAttendanceSchema: Schema = new Schema(
   {
-    spotId: { type: Schema.Types.ObjectId, ref: "Spot", required: true },
-    child: { type: Number, required: true },
+    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
+    egg: { type: Number, required: true },
   },
   {
     timestamps: true, // createdAt, updatedAt
@@ -51,7 +51,7 @@ const ChildAttendanceSchema: Schema = new Schema(
 
 const CommentSchema: Schema = new Schema(
   {
-    spotId: { type: Schema.Types.ObjectId, ref: "Spot", required: true },
+    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
     comment: { type: String, required: true },
   },
   {
@@ -59,23 +59,23 @@ const CommentSchema: Schema = new Schema(
   }
 );
 
-const femaleAttendance = mongoose.model<IFemaleAttendance>(
-  "FemaleAttendance",
-  FemaleAttendanceSchema
+const BananaAttendance = mongoose.model<IBananaAttendance>(
+  "BananaAttendance",
+  BananaAttendanceSchema
 );
-const maleAttendance = mongoose.model<IMaleAttendance>(
-  "MaleAttendance",
-  MaleAttendanceSchema
+const banrutiAttendance = mongoose.model<IBanrutiAttendance>(
+  "BanrutiAttendance",
+  BanrutiAttendanceSchema
 );
-const childAttendance = mongoose.model<IChildAttendance>(
-  "ChildAttendance",
-  ChildAttendanceSchema
+const eggAttendance = mongoose.model<IEggAttendance>(
+  "EggAttendance",
+  EggAttendanceSchema
 );
 const commentModel = mongoose.model<IComment>("Comment", CommentSchema);
 
 export const attendanceModel = {
-  femaleAttendance,
-  maleAttendance,
-  childAttendance,
+  BananaAttendance,
+  banrutiAttendance,
+  eggAttendance,
   commentModel,
 };

@@ -41,12 +41,12 @@ const AddressSchema = new mongoose_1.Schema({
     district: { type: String, required: true },
     googleLocation: { type: String, required: false },
 });
-const SpotSchema = new mongoose_1.Schema({
-    spotName: { type: String, required: true },
-    spotCode: { type: String, required: true, unique: true },
+const SchoolSchema = new mongoose_1.Schema({
+    schoolName: { type: String, required: true },
+    schoolCode: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     concernMobileNumber: { type: String, required: true },
     totalEmployees: { type: Number, required: true },
     address: { type: AddressSchema, required: true },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("Spot", SpotSchema);
+exports.default = mongoose_1.default.model("School", SchoolSchema);

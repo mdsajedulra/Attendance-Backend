@@ -6,17 +6,17 @@ interface IAddress {
   googleLocation: string; // could be "lat,long" or URL
 }
 
-export interface ISpot extends Document {
-  spotName: string;
-  spotCode: string;
+export interface ISchool extends Document {
+  schoolName: string;
+  schoolCode: string;
   password: string;
   concernMobileNumber: string;
   totalEmployees: number;
   address: IAddress;
 }
 
-interface ISpotLogin {
-  spotCode: string;
+interface ISchoolLogin {
+  schoolCode: string;
   password: string;
 }
-export { ISpotLogin };
+export { ISchoolLogin };

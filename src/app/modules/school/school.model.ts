@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { ISpot } from "./spot.interface";
+import { ISchool } from "./school.interface";
 
 const AddressSchema: Schema = new Schema({
   village: { type: String, required: true },
@@ -9,10 +9,10 @@ const AddressSchema: Schema = new Schema({
   googleLocation: { type: String, required: false },
 });
 
-const SpotSchema: Schema = new Schema(
+const SchoolSchema: Schema = new Schema(
   {
-    spotName: { type: String, required: true },
-    spotCode: { type: String, required: true, unique: true },
+    schoolName: { type: String, required: true },
+    schoolCode: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     concernMobileNumber: { type: String, required: true },
     totalEmployees: { type: Number, required: true },
@@ -21,4 +21,4 @@ const SpotSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<ISpot>("Spot", SpotSchema);
+export default mongoose.model<ISchool>("School", SchoolSchema);

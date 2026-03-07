@@ -4,10 +4,10 @@ export interface IAddress {
   upozila: string;
   district: string;
 }
-export interface ISpot {
+export interface ISchool {
   _id: string;
-  spotName: string;
-  spotCode: string;
+  schoolName: string;
+  schoolCode: string;
   password?: string;
   concernMobileNumber?: string;
   totalEmployees?: number;
@@ -18,31 +18,31 @@ export interface ISpot {
 }
 export interface IAttendanceItem {
   _id: string;
-  spotId: ISpot;     // populated spot object
-  child?: number;    // when type = child
-  male?: number;     // when type = male
-  female?: number;   // when type = female
+  schoolId: ISchool;     // populated school object
+  egg?: number;    // when type = egg
+  banruti?: number;     // when type = banruti
+  banana?: number;   // when type = banana
   createdAt: string;
   updatedAt: string;
   __v?: number;
-  type: "female" | "male" | "child";
+  type: "banana" | "banruti" | "egg";
   count: number;     // total count
   recordId: string;  // attendance record _id
 }
  export interface IGroupedAttendance {
   date: string;  // e.g. "2025-11-24"
-  spotId: string;
-  spotName: string;
-  spotCode: string;
+  schoolId: string;
+  schoolName: string;
+  schoolCode: string;
   concernMobileNumber?: string;
 
   address: IAddress;
 
-  female: number;
-  male: number;
-  child: number;
+  banana: number;
+  banruti: number;
+  egg: number;
 
-  spotDetails: ISpot;
+  schoolDetails: ISchool;
 
   attendanceIds: string[];
 }

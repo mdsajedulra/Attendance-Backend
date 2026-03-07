@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userRoute from "../modules/user/user.routes";
 import authrouter from "../modules/auth/auth.routes";
-import spotRouter from "../modules/spot/spot.routes";
+import schoolRouter from "../modules/school/school.routes";
 import attendanceRoutes from "../modules/Attendance/attendance.routes";
 
 const router = Router();
@@ -16,8 +16,8 @@ const moduleRoutes = [
     route: authrouter,
   },
   {
-    path: "/spot",
-    route: spotRouter,
+    path: "/school",
+    route: schoolRouter,
   },
   {
     path: "/attendance",

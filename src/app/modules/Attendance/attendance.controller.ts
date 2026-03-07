@@ -4,97 +4,97 @@ import sendResponse from "../../utils/sendResponse";
 import { attendanceService } from "./attendance.service";
 import { ObjectId } from "mongoose";
 
-// female attendance controller
+// banana attendance controller
 
-const createFemaleAttendance = catchAsync(async (req, res) => {
+const createBananaAttendance = catchAsync(async (req, res) => {
   const payload = req.body;
-  const result = await attendanceService.createFemaleAttendance(payload);
+  const result = await attendanceService.createBananaAttendance(payload);
   sendResponse(res, {
-    message: "Female attendance recorded successfully",
+    message: "banana attendance recorded successfully",
     statusCode: StatusCodes.CREATED,
     success: true,
     data: result,
   });
 });
 
-const getLastFemaleAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getLastFemaleAttendance();
+const getLastBananaAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getLastBananaAttendance();
   sendResponse(res, {
-    message: "Last female attendance fetched successfully",
+    message: "Last banana attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
   });
 });
 
-const getFemaleAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getFemaleAttendance();
+const getBananaAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getBananaAttendance();
   sendResponse(res, {
-    message: "Female attendance fetched successfully",
+    message: "banana attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
   });
 });
 
-// create male attendance
+// create banruti attendance
 
-const createMaleAttendance = catchAsync(async (req, res) => {
+const createBanrutiAttendance = catchAsync(async (req, res) => {
   const payload = req.body;
-  const result = await attendanceService.createMaleAttendance(payload);
+  const result = await attendanceService.createBanrutiAttendance(payload);
   sendResponse(res, {
-    message: "Male attendance recorded successfully",
+    message: "Banruti attendance recorded successfully",
     statusCode: StatusCodes.CREATED,
     success: true,
     data: result,
   });
 });
 
-const getLastMaleAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getLastMaleAttendance();
+const getLastBanrutiAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getLastBanrutiAttendance();
   sendResponse(res, {
-    message: "Last male attendance fetched successfully",
+    message: "Last banruti attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
   });
 });
-const getMaleAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getMaleAttendance();
+const getBanrutiAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getBanrutiAttendance();
   sendResponse(res, {
-    message: "Male attendance fetched successfully",
+    message: "Banruti attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
   });
 });
 
-// child attendance controller
-const createChildAttendance = catchAsync(async (req, res) => {
+// egg attendance controller
+const createEggAttendance = catchAsync(async (req, res) => {
   const payload = req.body;
-  const result = await attendanceService.createChildAttendance(payload);
+  const result = await attendanceService.createEggAttendance(payload);
   sendResponse(res, {
-    message: "Child attendance recorded successfully",
+    message: "Egg attendance recorded successfully",
     statusCode: StatusCodes.CREATED,
     success: true,
     data: result,
   });
 });
 
-const getLastChildAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getLastChildAttendance();
+const getLastEggAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getLastEggAttendance();
   sendResponse(res, {
-    message: "Last child attendance fetched successfully",
+    message: "Last egg attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
   });
 });
 
-const getChildAttendance = catchAsync(async (req, res) => {
-  const result = await attendanceService.getChildAttendance();
+const getEggAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getEggAttendance();
   sendResponse(res, {
-    message: "Child attendance fetched successfully",
+    message: "Egg attendance fetched successfully",
     statusCode: StatusCodes.OK,
     success: true,
     data: result,
@@ -103,7 +103,7 @@ const getChildAttendance = catchAsync(async (req, res) => {
 
 const getAllLastAttendance = catchAsync(async (req, res) => {
   const result = await attendanceService.getAllLastAttendance(
-    req.query.spotId as unknown as ObjectId
+    req.query.schoolId as unknown as ObjectId
   );
   sendResponse(res, {
     message: "All last attendance fetched successfully",
@@ -170,16 +170,16 @@ const missing = catchAsync(async (req, res) => {
 });
 
 export const attendanceController = {
-  createFemaleAttendance,
-  createMaleAttendance,
-  createChildAttendance,
+  createBananaAttendance,
+  createBanrutiAttendance,
+  createEggAttendance,
   createComment,
-  getLastFemaleAttendance,
-  getLastMaleAttendance,
-  getLastChildAttendance,
-  getFemaleAttendance,
-  getMaleAttendance,
-  getChildAttendance,
+  getLastBananaAttendance,
+  getLastBanrutiAttendance,
+  getLastEggAttendance,
+  getBananaAttendance,
+  getBanrutiAttendance,
+  getEggAttendance,
   getComments,
   getAllLastAttendance,
   getAllAttendance,

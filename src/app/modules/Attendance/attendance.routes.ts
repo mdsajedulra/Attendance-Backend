@@ -3,39 +3,39 @@ import { attendanceController } from "./attendance.controller";
 
 const attendanceRoutes = Router();
 
-// female routes
+// banana routes
 
 attendanceRoutes.post(
-  "/create-female",
-  attendanceController.createFemaleAttendance
+  "/create-banana",
+  attendanceController.createBananaAttendance
 );
 attendanceRoutes.get(
-  "/get-last-female",
-  attendanceController.getLastFemaleAttendance
+  "/get-last-banana",
+  attendanceController.getLastBananaAttendance
 );
-attendanceRoutes.get("/get-female", attendanceController.getFemaleAttendance);
+attendanceRoutes.get("/get-banana", attendanceController.getBananaAttendance);
 
-// male routes
+// banruti routes
 
 attendanceRoutes.post(
-  "/create-male",
-  attendanceController.createMaleAttendance
+  "/create-banruti",
+  attendanceController.createBanrutiAttendance
 );
 attendanceRoutes.get(
-  "/get-last-male",
-  attendanceController.getLastMaleAttendance
+  "/get-last-banruti",
+  attendanceController.getLastBanrutiAttendance
 );
-attendanceRoutes.get("/get-male", attendanceController.getMaleAttendance);
+attendanceRoutes.get("/get-banruti", attendanceController.getBanrutiAttendance);
 
-// child routes
+// egg routes
 attendanceRoutes.post(
-  "/create-child",
-  attendanceController.createChildAttendance
+  "/create-egg",
+  attendanceController.createEggAttendance
 );
 
 attendanceRoutes.get(
-  "/get-last-child",
-  attendanceController.getLastChildAttendance
+  "/get-last-egg",
+  attendanceController.getLastEggAttendance
 );
 attendanceRoutes.get(
   "/get-all-last-attendance",
@@ -48,7 +48,7 @@ attendanceRoutes.get(
   "/get-all-attendance",
   attendanceController.getAllAttendance
 );
-attendanceRoutes.get("/get-child", attendanceController.getChildAttendance);
+attendanceRoutes.get("/get-egg", attendanceController.getEggAttendance);
 
 // comment routes
 attendanceRoutes.post("/create-comment", attendanceController.createComment);

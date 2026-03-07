@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const user_routes_1 = __importDefault(require("../modules/user/user.routes"));
 const auth_routes_1 = __importDefault(require("../modules/auth/auth.routes"));
-const spot_routes_1 = __importDefault(require("../modules/spot/spot.routes"));
+const school_routes_1 = __importDefault(require("../modules/school/school.routes"));
 const attendance_routes_1 = __importDefault(require("../modules/Attendance/attendance.routes"));
 const router = (0, express_1.Router)();
 const moduleRoutes = [
@@ -19,8 +19,8 @@ const moduleRoutes = [
         route: auth_routes_1.default,
     },
     {
-        path: "/spot",
-        route: spot_routes_1.default,
+        path: "/school",
+        route: school_routes_1.default,
     },
     {
         path: "/attendance",
