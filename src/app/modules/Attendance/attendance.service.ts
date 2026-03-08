@@ -224,7 +224,7 @@ const getEggAttendance = async () => {
 };
 
 const getAllLastAttendance = async (payload: ObjectId) => {
-  console.log(payload);
+
   const lastBanana = await attendanceModel.BananaAttendance
     .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });

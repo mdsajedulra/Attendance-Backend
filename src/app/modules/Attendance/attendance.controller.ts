@@ -102,6 +102,7 @@ const getEggAttendance = catchAsync(async (req, res) => {
 });
 
 const getAllLastAttendance = catchAsync(async (req, res) => {
+  console.log(req.query);
   const result = await attendanceService.getAllLastAttendance(
     req.query.schoolId as unknown as ObjectId
   );
