@@ -161,7 +161,6 @@ const getEggAttendance = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getAllLastAttendance = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
     const lastBanana = yield attendance_model_1.attendanceModel.BananaAttendance
         .findOne({ schoolId: payload })
         .sort({ createdAt: -1 });

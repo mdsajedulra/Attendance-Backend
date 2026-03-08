@@ -3,6 +3,9 @@ import userRoute from "../modules/user/user.routes";
 import authrouter from "../modules/auth/auth.routes";
 import schoolRouter from "../modules/school/school.routes";
 import attendanceRoutes from "../modules/Attendance/attendance.routes";
+import contactInfoRouter from "../modules/contactinfo/contactInfo.routes";
+
+
 
 const router = Router();
 
@@ -22,6 +25,10 @@ const moduleRoutes = [
   {
     path: "/attendance",
     route: attendanceRoutes,
+  },
+  {
+    path: "/contactinfo",
+    route: contactInfoRouter,
   },
 ];
 

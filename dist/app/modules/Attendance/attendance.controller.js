@@ -105,6 +105,7 @@ const getEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     });
 }));
 const getAllLastAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.query);
     const result = yield attendance_service_1.attendanceService.getAllLastAttendance(req.query.schoolId);
     (0, sendResponse_1.default)(res, {
         message: "All last attendance fetched successfully",
