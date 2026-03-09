@@ -7,6 +7,19 @@ attendanceRoutes.post(
   "/",
   attendanceController.createAttendance
 );
+
+// get attendance all by filter
+
+attendanceRoutes.get(
+  "/",
+  attendanceController.getAttendance
+);
+
+// get last attendacne
+attendanceRoutes.get(
+  "/get-last",
+  attendanceController.getLastAttendance
+);
 // banana routes
 
 attendanceRoutes.post(

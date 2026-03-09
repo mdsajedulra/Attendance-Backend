@@ -42,11 +42,23 @@ const createAttendance = async (payload: IAttendance) => {
   return result;
 };
 
-const getAttendance = async (payload: IAttendance) => {
-  const result = await Attendance.find({
-    schoolId: new mongoose.Types.ObjectId(payload.schoolId),
-    createdAt: { $gte: payload.date, $lte: payload.date },
-  });
+// get last attendance
+
+const getLastAttendance = async (id: ObjectId) => {
+  const result = await Attendance.findOne({schoolId: id}).sort({ createdAt: -1 });
+  console.log(result);
+  return result;
+};
+
+
+// console.log(payload);
+// const result = await Attendance.find({
+//   schoolId: new mongoose.Types.ObjectId(payload.schoolId),
+//   createdAt: { $gte: payload.date, $lte: payload.date },
+// });
+const getAttendance = async (payload) => {
+
+  const result = await Attendance.find().populate("schoolId");
   return result;
 };
 
@@ -580,5 +592,6 @@ export const attendanceService = {
   missing,
 
   createAttendance,
+  getLastAttendance,
   getAttendance,
 };

@@ -4,9 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { attendanceService } from "./attendance.service";
 import { ObjectId } from "mongoose";
 
-
-// reform and redesign 
-
+// reform and redesign
 
 const createAttendance = catchAsync(async (req, res) => {
   const payload = req.body;
@@ -19,38 +17,28 @@ const createAttendance = catchAsync(async (req, res) => {
   });
 });
 
+const getAttendance = catchAsync(async (req, res) => {
+  const result = await attendanceService.getAttendance(req.query);
+  sendResponse(res, {
+    message: "Attendance fetched successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
 
-// const getAttendance = catchAsync(async (req, res) => {
-//   const result = await attendanceService.getAttendance(req.query);
-//   sendResponse(res, {
-//     message: "Attendance fetched successfully",
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     data: result,
-//   });
-// });
-
-
-
-// const getLastAttendance = catchAsync(async (req, res) => {
-//   const result = await attendanceService.getLastAttendance();
-//   sendResponse(res, { 
-//     message: "Last attendance fetched successfully",
-//     statusCode: StatusCodes.OK,
-//     success: true,
-//     data: result,
-//   });
-// });
-
-
-
-
-
-
-
-
-
-
+const getLastAttendance = catchAsync(async (req, res) => {
+  console.log(req.query.schoolId);
+  const result = await attendanceService.getLastAttendance(
+    req.query.schoolId as unknown as ObjectId,
+  );
+  sendResponse(res, {
+    message: "Last attendance fetched successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
 
 // banana attendance controller
 
@@ -152,7 +140,7 @@ const getEggAttendance = catchAsync(async (req, res) => {
 const getAllLastAttendance = catchAsync(async (req, res) => {
   console.log(req.query);
   const result = await attendanceService.getAllLastAttendance(
-    req.query.schoolId as unknown as ObjectId
+    req.query.schoolId as unknown as ObjectId,
   );
   sendResponse(res, {
     message: "All last attendance fetched successfully",
@@ -235,9 +223,7 @@ export const attendanceController = {
   deleteAttendance,
   missing,
 
-
-
   createAttendance,
-  // getLastAttendance,
-  // getAttendance,
+  getLastAttendance,
+  getAttendance,
 };
