@@ -2,10 +2,53 @@ import mongoose, { Model, ObjectId, Types } from "mongoose";
 
 import moment from "moment-timezone";
 
-import { IComment } from "./attendance.interface";
-import { attendanceModel } from "./attendance.model";
+import { IAttendance, IComment } from "./attendance.interface";
+import { Attendance, attendanceModel } from "./attendance.model";
 import schoolModel from "../school/school.model";
 
+// reform and redesign
+
+const createAttendance = async (payload: IAttendance) => {
+
+  const startOfDay = moment().tz("Asia/Dhaka").startOf("day").toDate();
+  const endOfDay = moment().tz("Asia/Dhaka").endOf("day").toDate();
+
+  const existing = await Attendance.findOne({
+    schoolId: payload.schoolId,
+    createdAt: { $gte: startOfDay, $lte: endOfDay }
+  });
+
+  if (payload.banana && existing?.banana?.submittedAt) {
+    throw new Error("আজ ইতিমধ্যেই Banana submit করা হয়েছে");
+  }
+
+  if (payload.banruti && existing?.banruti?.submittedAt) {
+    throw new Error("আজ ইতিমধ্যেই Banruti submit করা হয়েছে");
+  }
+
+  if (payload.egg && existing?.egg?.submittedAt) {
+    throw new Error("আজ ইতিমধ্যেই Egg submit করা হয়েছে");
+  }
+
+  const result = await Attendance.findOneAndUpdate(
+    {
+      schoolId: payload.schoolId,
+      createdAt: { $gte: startOfDay, $lte: endOfDay }
+    },
+    { $set: payload },
+    { upsert: true, new: true }
+  );
+
+  return result;
+};
+
+const getAttendance = async (payload: IAttendance) => {
+  const result = await Attendance.find({
+    schoolId: new mongoose.Types.ObjectId(payload.schoolId),
+    createdAt: { $gte: payload.date, $lte: payload.date },
+  });
+  return result;
+};
 
 // sajed
 
@@ -128,9 +171,9 @@ const createBananaAttendance = async (payload: IBananaAttendance) => {
 const getLastBananaAttendance = async () => {
   let result;
   try {
-    result = await attendanceModel.BananaAttendance
-      .findOne()
-      .sort({ createdAt: -1 });
+    result = await attendanceModel.BananaAttendance.findOne().sort({
+      createdAt: -1,
+    });
 
     if (result) {
       console.log("Last entry found:", result);
@@ -224,10 +267,9 @@ const getEggAttendance = async () => {
 };
 
 const getAllLastAttendance = async (payload: ObjectId) => {
-
-  const lastBanana = await attendanceModel.BananaAttendance
-    .findOne({ schoolId: payload })
-    .sort({ createdAt: -1 });
+  const lastBanana = await attendanceModel.BananaAttendance.findOne({
+    schoolId: payload,
+  }).sort({ createdAt: -1 });
   const lastBanruti = await attendanceModel.banrutiAttendance
     .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });
@@ -235,7 +277,9 @@ const getAllLastAttendance = async (payload: ObjectId) => {
     .findOne({ schoolId: payload })
     .sort({ createdAt: -1 });
 
-  return [{ lastBanana: lastBanana, lastBanruti: lastBanruti, lastEgg: lastEgg }];
+  return [
+    { lastBanana: lastBanana, lastBanruti: lastBanruti, lastEgg: lastEgg },
+  ];
 };
 const getAllAttendance = async (payload: IPayload) => {
   // -----------------------------
@@ -332,10 +376,9 @@ const getAllAttendance = async (payload: IPayload) => {
 
   if (!attendanceType || attendanceType === "banana") {
     fetchPromises.push(
-      attendanceModel.BananaAttendance
-        .find(baseQuery)
+      attendanceModel.BananaAttendance.find(baseQuery)
         .populate("schoolId")
-        .sort(sortOption)
+        .sort(sortOption),
     );
   } else {
     fetchPromises.push(Promise.resolve([]));
@@ -346,7 +389,7 @@ const getAllAttendance = async (payload: IPayload) => {
       attendanceModel.banrutiAttendance
         .find(baseQuery)
         .populate("schoolId")
-        .sort(sortOption)
+        .sort(sortOption),
     );
   } else {
     fetchPromises.push(Promise.resolve([]));
@@ -357,7 +400,7 @@ const getAllAttendance = async (payload: IPayload) => {
       attendanceModel.eggAttendance
         .find(baseQuery)
         .populate("schoolId")
-        .sort(sortOption)
+        .sort(sortOption),
     );
   } else {
     fetchPromises.push(Promise.resolve([]));
@@ -367,7 +410,7 @@ const getAllAttendance = async (payload: IPayload) => {
   [banana, banruti, egg] = (await Promise.all(fetchPromises)) as unknown as [
     IBananaAttendance[],
     IBanrutiAttendance[],
-    IEggAttendance[]
+    IEggAttendance[],
   ];
 
   // -----------------------------
@@ -440,12 +483,12 @@ const getAllAttendance = async (payload: IPayload) => {
 
   // 7️⃣a. ওই দিনের জন্য যে সমস্ত স্পট অ্যাটেনডেন্স জমা দিয়েছে তাদের ID গুলি বের করা
   const submittedSchoolIds = Object.values(grouped).map(
-    (item: any) => item.schoolId
+    (item: any) => item.schoolId,
   );
 
   // 7️⃣b. Master School List থেকে সেই স্পটগুলো খুঁজে বের করা, যারা কোনো ডেটাই জমা দেয়নি
   const completelyMissingSchools = matchedSchools.filter(
-    (school) => !submittedSchoolIds.includes(school._id.toString())
+    (school) => !submittedSchoolIds.includes(school._id.toString()),
   );
 
   // 7️⃣c. মিসিং স্পটগুলিকে final report-এর ফরম্যাটে তৈরি করা
@@ -511,8 +554,10 @@ const deleteAttendanceService = async (id: string) => {
 };
 
 const missing = async () => {
-  const result = await schoolModel.find({schoolCode: "55"});
-  const banrutiAttendance = await attendanceModel.banrutiAttendance.find({schoolId: result[0]._id});
+  const result = await schoolModel.find({ schoolCode: "55" });
+  const banrutiAttendance = await attendanceModel.banrutiAttendance.find({
+    schoolId: result[0]._id,
+  });
   console.log(banrutiAttendance);
   // console.log(result);
 };
@@ -533,4 +578,7 @@ export const attendanceService = {
   getAllAttendance,
   deleteAttendanceService,
   missing,
+
+  createAttendance,
+  getAttendance,
 };

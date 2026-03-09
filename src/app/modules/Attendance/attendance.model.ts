@@ -4,20 +4,58 @@ import {
   IComment,
   IBananaAttendance,
   IBanrutiAttendance,
+  IAttendance,
 } from "./attendance.interface";
 
-const AttendanceSchema: Schema = new Schema(
+const AttendanceSchema = new Schema(
   {
-    schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
-    banana: { type: Number, required: true },
-    banruti: { type: Number, required: true },
-    egg: { type: Number, required: true },
-    notes: { type: String },
+    schoolId: {
+      type: Schema.Types.ObjectId,
+      ref: "School",
+      required: true,
+    },
+
+    date: {
+      type: Date,
+      required: true,
+    },
+
+    banana: {
+      count: Number,
+      submittedAt: Date,
+    },
+
+    banruti: {
+      count: Number,
+      submittedAt: Date,
+    },
+
+    egg: {
+      count: Number,
+      submittedAt: Date,
+    },
   },
   {
-    timestamps: true, // createdAt, updatedAt
-  }
+    timestamps: true,
+  },
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const BananaAttendanceSchema: Schema = new Schema(
   {
@@ -26,7 +64,7 @@ const BananaAttendanceSchema: Schema = new Schema(
   },
   {
     timestamps: true, // createdAt, updatedAt
-  }
+  },
 );
 
 const BanrutiAttendanceSchema: Schema = new Schema(
@@ -36,7 +74,7 @@ const BanrutiAttendanceSchema: Schema = new Schema(
   },
   {
     timestamps: true, // createdAt, updatedAt
-  }
+  },
 );
 
 const EggAttendanceSchema: Schema = new Schema(
@@ -46,7 +84,7 @@ const EggAttendanceSchema: Schema = new Schema(
   },
   {
     timestamps: true, // createdAt, updatedAt
-  }
+  },
 );
 
 const CommentSchema: Schema = new Schema(
@@ -56,20 +94,24 @@ const CommentSchema: Schema = new Schema(
   },
   {
     timestamps: true, // createdAt, updatedAt
-  }
+  },
 );
+
+
+export const Attendance = mongoose.model<IAttendance>("Attendance", AttendanceSchema);
+
 
 const BananaAttendance = mongoose.model<IBananaAttendance>(
   "BananaAttendance",
-  BananaAttendanceSchema
+  BananaAttendanceSchema,
 );
 const banrutiAttendance = mongoose.model<IBanrutiAttendance>(
   "BanrutiAttendance",
-  BanrutiAttendanceSchema
+  BanrutiAttendanceSchema,
 );
 const eggAttendance = mongoose.model<IEggAttendance>(
   "EggAttendance",
-  EggAttendanceSchema
+  EggAttendanceSchema,
 );
 const commentModel = mongoose.model<IComment>("Comment", CommentSchema);
 

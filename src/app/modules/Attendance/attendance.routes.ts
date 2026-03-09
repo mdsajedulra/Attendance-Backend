@@ -3,6 +3,10 @@ import { attendanceController } from "./attendance.controller";
 
 const attendanceRoutes = Router();
 
+attendanceRoutes.post(
+  "/",
+  attendanceController.createAttendance
+);
 // banana routes
 
 attendanceRoutes.post(

@@ -1,11 +1,49 @@
-export interface IAttendance {
-  schoolId: string;
-  banana: number;
-  banruti: number;
-  egg: number;
-  notes?: string;
-  timestamp?: Date;
+
+import { Types } from "mongoose";
+
+interface IFoodItem {
+  count?: number;
+  submittedAt?: Date;
 }
+
+export interface IAttendance {
+  _id?: Types.ObjectId;
+
+  schoolId: Types.ObjectId;
+
+  date:{
+    type: Date;
+    required: true;
+  };
+
+  banana?: IFoodItem;
+
+  banruti?: IFoodItem;
+
+  egg?: IFoodItem;
+
+  createdAt?: Date;
+  
+  updatedAt?: Date;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export interface IBananaAttendance {
   schoolId: string;
   banana: number;

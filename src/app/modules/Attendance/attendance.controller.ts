@@ -4,6 +4,54 @@ import sendResponse from "../../utils/sendResponse";
 import { attendanceService } from "./attendance.service";
 import { ObjectId } from "mongoose";
 
+
+// reform and redesign 
+
+
+const createAttendance = catchAsync(async (req, res) => {
+  const payload = req.body;
+  const result = await attendanceService.createAttendance(payload);
+  sendResponse(res, {
+    message: "Attendance recorded successfully",
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    data: result,
+  });
+});
+
+
+// const getAttendance = catchAsync(async (req, res) => {
+//   const result = await attendanceService.getAttendance(req.query);
+//   sendResponse(res, {
+//     message: "Attendance fetched successfully",
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     data: result,
+//   });
+// });
+
+
+
+// const getLastAttendance = catchAsync(async (req, res) => {
+//   const result = await attendanceService.getLastAttendance();
+//   sendResponse(res, { 
+//     message: "Last attendance fetched successfully",
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     data: result,
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
 // banana attendance controller
 
 const createBananaAttendance = catchAsync(async (req, res) => {
@@ -186,4 +234,10 @@ export const attendanceController = {
   getAllAttendance,
   deleteAttendance,
   missing,
+
+
+
+  createAttendance,
+  // getLastAttendance,
+  // getAttendance,
 };
