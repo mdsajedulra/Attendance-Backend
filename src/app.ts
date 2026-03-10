@@ -20,15 +20,21 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-  }),
+  })
 );
-app.options("*", cors());
+
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: "SFP Server Running" });
+  res.status(200).json({ success: true, message: "Welcome to osaca Careers" });
 });
 
 // unknown route error handle

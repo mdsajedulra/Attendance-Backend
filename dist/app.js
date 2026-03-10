@@ -20,13 +20,19 @@ const allowedOrigins = [
     "https://admin-dashboard-gamma-inky-62.vercel.app",
 ];
 app.use((0, cors_1.default)({
-    origin: true,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 }));
-app.options("*", (0, cors_1.default)());
 app.use("/api/v1", routes_1.default);
 app.get("/", (req, res) => {
-    res.status(200).json({ success: true, message: "SFP Server Running" });
+    res.status(200).json({ success: true, message: "Welcome to osaca Careers" });
 });
 // unknown route error handle
 app.use(globalErrorHandler_1.globalErrorHandler);
