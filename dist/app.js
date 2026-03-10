@@ -23,6 +23,7 @@ app.use((0, cors_1.default)({
     origin: true,
     credentials: true,
 }));
+app.options("*", (0, cors_1.default)());
 app.use("/api/v1", routes_1.default);
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "SFP Server Running" });
