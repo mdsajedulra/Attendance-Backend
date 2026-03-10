@@ -16,7 +16,7 @@ const allowedOrigins = [
   "http://192.168.0.105:19000",
   "http://192.168.0.105",
   "https://admin-dashboard-gamma-inky-62.vercel.app",
-  "*",
+
 ];
 
 app.use(
