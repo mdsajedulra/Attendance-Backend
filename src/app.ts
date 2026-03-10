@@ -29,7 +29,7 @@ app.use(
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: "Welcome to osaca Careers" });
+  res.status(200).json({ success: true, message: "SFP Server Running" });
 });
 
 // unknown route error handle
