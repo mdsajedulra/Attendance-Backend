@@ -27,6 +27,29 @@ const createContactInfo = (0, catchAsync_1.default)((req, res, next) => __awaite
         data: result,
     });
 }));
+// get contact info
+const getContactInfo = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield contact_service_1.contactInfoService.getContactInfo();
+    (0, sendResponse_1.default)(res, {
+        message: "Contact info fetched Successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
+// update contact info
+const updateContactInfo = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const payload = req.body;
+    const result = yield contact_service_1.contactInfoService.updateContactInfo(payload);
+    (0, sendResponse_1.default)(res, {
+        message: "Contact info updated Successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 exports.contactInfoController = {
     createContactInfo,
+    getContactInfo,
+    updateContactInfo
 };

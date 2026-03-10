@@ -17,107 +17,41 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const attendance_service_1 = require("./attendance.service");
-// banana attendance controller
-const createBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// reform and redesign
+const createAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createBananaAttendance(payload);
+    const result = yield attendance_service_1.attendanceService.createAttendance(payload);
     (0, sendResponse_1.default)(res, {
-        message: "banana attendance recorded successfully",
+        message: "Attendance recorded successfully",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
 }));
-const getLastBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastBananaAttendance();
+const getAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getAttendance(req.query);
     (0, sendResponse_1.default)(res, {
-        message: "Last banana attendance fetched successfully",
+        message: "Attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-const getBananaAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getBananaAttendance();
+// get report
+const getAttendanceReport = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getAreaReport(req.query);
     (0, sendResponse_1.default)(res, {
-        message: "banana attendance fetched successfully",
+        message: "Attendance report fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
     });
 }));
-// create banruti attendance
-const createBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createBanrutiAttendance(payload);
+const getLastAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.query.schoolId);
+    const result = yield attendance_service_1.attendanceService.getLastAttendance(req.query.schoolId);
     (0, sendResponse_1.default)(res, {
-        message: "Banruti attendance recorded successfully",
-        statusCode: http_status_codes_1.StatusCodes.CREATED,
-        success: true,
-        data: result,
-    });
-}));
-const getLastBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastBanrutiAttendance();
-    (0, sendResponse_1.default)(res, {
-        message: "Last banruti attendance fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
-const getBanrutiAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getBanrutiAttendance();
-    (0, sendResponse_1.default)(res, {
-        message: "Banruti attendance fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
-// egg attendance controller
-const createEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const payload = req.body;
-    const result = yield attendance_service_1.attendanceService.createEggAttendance(payload);
-    (0, sendResponse_1.default)(res, {
-        message: "Egg attendance recorded successfully",
-        statusCode: http_status_codes_1.StatusCodes.CREATED,
-        success: true,
-        data: result,
-    });
-}));
-const getLastEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getLastEggAttendance();
-    (0, sendResponse_1.default)(res, {
-        message: "Last egg attendance fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
-const getEggAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getEggAttendance();
-    (0, sendResponse_1.default)(res, {
-        message: "Egg attendance fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
-const getAllLastAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.query);
-    const result = yield attendance_service_1.attendanceService.getAllLastAttendance(req.query.schoolId);
-    (0, sendResponse_1.default)(res, {
-        message: "All last attendance fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
-const getAllAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_service_1.attendanceService.getAllAttendance(req.query);
-    (0, sendResponse_1.default)(res, {
-        message: "All attendance fetched successfully",
+        message: "Last attendance fetched successfully",
         statusCode: http_status_codes_1.StatusCodes.OK,
         success: true,
         data: result,
@@ -134,11 +68,11 @@ const createComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
-const getComments = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield attendance_service_1.attendanceService.getComments();
     (0, sendResponse_1.default)(res, {
-        message: "Comments fetched successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
+        message: "Comment added successfully",
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
         success: true,
         data: result,
     });
@@ -154,29 +88,12 @@ const deleteAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
-const missing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = attendance_service_1.attendanceService.missing();
-    (0, sendResponse_1.default)(res, {
-        message: "get missing attendance",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        success: true,
-        data: result,
-    });
-}));
 exports.attendanceController = {
-    createBananaAttendance,
-    createBanrutiAttendance,
-    createEggAttendance,
-    createComment,
-    getLastBananaAttendance,
-    getLastBanrutiAttendance,
-    getLastEggAttendance,
-    getBananaAttendance,
-    getBanrutiAttendance,
-    getEggAttendance,
-    getComments,
-    getAllLastAttendance,
-    getAllAttendance,
     deleteAttendance,
-    missing,
+    createComment,
+    getComment,
+    createAttendance,
+    getLastAttendance,
+    getAttendance,
+    getAttendanceReport,
 };

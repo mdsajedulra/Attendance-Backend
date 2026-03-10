@@ -33,16 +33,32 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.attendanceModel = void 0;
+exports.attendanceModel = exports.Attendance = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const AttendanceSchema = new mongoose_1.Schema({
-    schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
-    banana: { type: Number, required: true },
-    banruti: { type: Number, required: true },
-    egg: { type: Number, required: true },
-    notes: { type: String },
+    schoolId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "School",
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
+    banana: {
+        count: Number,
+        submittedAt: Date,
+    },
+    banruti: {
+        count: Number,
+        submittedAt: Date,
+    },
+    egg: {
+        count: Number,
+        submittedAt: Date,
+    },
 }, {
-    timestamps: true, // createdAt, updatedAt
+    timestamps: true,
 });
 const BananaAttendanceSchema = new mongoose_1.Schema({
     schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
@@ -68,6 +84,7 @@ const CommentSchema = new mongoose_1.Schema({
 }, {
     timestamps: true, // createdAt, updatedAt
 });
+exports.Attendance = mongoose_1.default.model("Attendance", AttendanceSchema);
 const BananaAttendance = mongoose_1.default.model("BananaAttendance", BananaAttendanceSchema);
 const banrutiAttendance = mongoose_1.default.model("BanrutiAttendance", BanrutiAttendanceSchema);
 const eggAttendance = mongoose_1.default.model("EggAttendance", EggAttendanceSchema);
