@@ -20,21 +20,38 @@ const allowedOrigins = [
     "https://admin-dashboard-gamma-inky-62.vercel.app",
 ];
 app.use((0, cors_1.default)({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
+    origin: (origin, callback) => {
+        // Mobile apps / Postman / server-to-server
+        if (!origin) {
+            return callback(null, true);
         }
-        else {
-            callback(new Error("Not allowed by CORS"));
+        // Allowed list
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
         }
+        // Allow all localhost ports (useful for dev)
+        if (origin.startsWith("http://localhost")) {
+            return callback(null, true);
+        }
+        // Allow all expo dev servers
+        if (origin.includes("expo")) {
+            return callback(null, true);
+        }
+        return callback(null, true); // fallback allow
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
+// important for preflight
+app.options("*", (0, cors_1.default)());
 app.use("/api/v1", routes_1.default);
 app.get("/", (req, res) => {
-    res.status(200).json({ success: true, message: "Welcome to osaca Careers" });
+    res.status(200).json({
+        success: true,
+        message: "Welcome to osaca Careers",
+    });
 });
-// unknown route error handle
 app.use(globalErrorHandler_1.globalErrorHandler);
 app.use(notFound_1.default);
 exports.default = app;
