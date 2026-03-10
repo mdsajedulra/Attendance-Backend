@@ -19,7 +19,8 @@ attendanceRoutes.get("/get-last", attendanceController.getLastAttendance);
 attendanceRoutes.get("/get-comment", attendanceController.getComment);
 attendanceRoutes.delete("/:id", attendanceController.deleteAttendance);
 
-// attendanceRoutes.get("/current", attendanceController.getCurrentEntry);
+attendanceRoutes.post("/create-comment", attendanceController.createComment);
+attendanceRoutes.get("/comment", attendanceController.getComment);
 // attendanceRoutes.get("/", attendanceController.getSingleAttendance);
 
 export default attendanceRoutes;
