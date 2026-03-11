@@ -20,6 +20,7 @@ attendanceRoutes.get("/get-comment", attendanceController.getComment);
 attendanceRoutes.delete("/:id", attendanceController.deleteAttendance);
 
 attendanceRoutes.post("/create-comment", attendanceController.createComment);
+attendanceRoutes.get("/missing", attendanceController.getMissing);
 attendanceRoutes.get("/comment", attendanceController.getComment);
 // attendanceRoutes.get("/", attendanceController.getSingleAttendance);
 

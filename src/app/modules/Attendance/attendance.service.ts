@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 
 import { IAttendance, IComment } from "./attendance.interface";
 import { Attendance, attendanceModel } from "./attendance.model";
+import schoolModel from "../school/school.model";
 
 
 // reform and redesign
@@ -237,6 +238,92 @@ const deleteAttendanceService = async (id: string) => {
   return existBanana;
 };
 
+// get missing data from attendance
+
+
+
+const getMissing = async (queryParams: any) => {
+  const { 
+    date,        // Required: "YYYY-MM-DD"
+    itemType,    // Required: "banana", "egg", or "banruti"
+    district, 
+    upozila, 
+    union, 
+    village, 
+    schoolCode, 
+    schoolName 
+  } = queryParams;
+
+  // 1. Date formatting (Start of the specific day)
+  const searchDate = new Date(date);
+  searchDate.setUTCHours(0, 0, 0, 0);
+
+  // 2. School matching filters (Dynamic)
+  const schoolFilter: Record<string, any> = {};
+  
+  if (district) schoolFilter["address.district"] = district;
+  if (upozila) schoolFilter["address.upozila"] = upozila;
+  if (union) schoolFilter["address.union"] = union;
+  if (village) schoolFilter["address.village"] = village;
+  if (schoolCode) schoolFilter["schoolCode"] = schoolCode;
+  if (schoolName) schoolFilter["schoolName"] = { $regex: schoolName, $options: "i" };
+
+  const result = await schoolModel.aggregate([
+    {
+      // Prothome school gulo filter kora (Location/Code/Name onujayi)
+      $match: schoolFilter
+    },
+    {
+      // Attendance data join kora (Oi specific diner jonno)
+      $lookup: {
+        from: "attendances",
+        let: { school_id: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$schoolId", "$$school_id"] },
+                  { $eq: ["$date", searchDate] }
+                ]
+              }
+            }
+          }
+        ],
+        as: "submission"
+      }
+    },
+    {
+      $addFields: {
+        entry: { $arrayElemAt: ["$submission", 0] }
+      }
+    },
+    {
+      // logic: Jodi oi specific item-er entry na thake ba count zero hoy
+      $match: {
+        $or: [
+          { [`entry.${itemType}.count`]: { $exists: false } },
+          { [`entry.${itemType}.count`]: null },
+          { [`entry.${itemType}.count`]: 0 }
+        ]
+      }
+    },
+    {
+      // UI er jonno dorkari fields select kora
+      $project: {
+        schoolName: 1,
+        schoolCode: 1,
+        address: 1,
+        concernMobileNumber: 1,
+        status: { $literal: "Missing" },
+        requestedItem: { $literal: itemType }
+      }
+    }
+  ]);
+
+  return result;
+};
+
 export const attendanceService = {
   createComment,
   getComments,
@@ -247,4 +334,7 @@ export const attendanceService = {
   getAttendance,
 
   getAreaReport,
+  getMissing,
+
+
 };

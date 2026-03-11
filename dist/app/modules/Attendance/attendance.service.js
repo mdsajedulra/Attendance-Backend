@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.attendanceService = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const attendance_model_1 = require("./attendance.model");
+const school_model_1 = __importDefault(require("../school/school.model"));
 // reform and redesign
 const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
@@ -180,6 +181,82 @@ const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, functi
     const existBanana = yield attendance_model_1.Attendance.deleteOne({ _id: id });
     return existBanana;
 });
+// get missing data from attendance
+const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
+    const { date, // Required: "YYYY-MM-DD"
+    itemType, // Required: "banana", "egg", or "banruti"
+    district, upozila, union, village, schoolCode, schoolName } = queryParams;
+    // 1. Date formatting (Start of the specific day)
+    const searchDate = new Date(date);
+    searchDate.setUTCHours(0, 0, 0, 0);
+    // 2. School matching filters (Dynamic)
+    const schoolFilter = {};
+    if (district)
+        schoolFilter["address.district"] = district;
+    if (upozila)
+        schoolFilter["address.upozila"] = upozila;
+    if (union)
+        schoolFilter["address.union"] = union;
+    if (village)
+        schoolFilter["address.village"] = village;
+    if (schoolCode)
+        schoolFilter["schoolCode"] = schoolCode;
+    if (schoolName)
+        schoolFilter["schoolName"] = { $regex: schoolName, $options: "i" };
+    const result = yield school_model_1.default.aggregate([
+        {
+            // Prothome school gulo filter kora (Location/Code/Name onujayi)
+            $match: schoolFilter
+        },
+        {
+            // Attendance data join kora (Oi specific diner jonno)
+            $lookup: {
+                from: "attendances",
+                let: { school_id: "$_id" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$schoolId", "$$school_id"] },
+                                    { $eq: ["$date", searchDate] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: "submission"
+            }
+        },
+        {
+            $addFields: {
+                entry: { $arrayElemAt: ["$submission", 0] }
+            }
+        },
+        {
+            // logic: Jodi oi specific item-er entry na thake ba count zero hoy
+            $match: {
+                $or: [
+                    { [`entry.${itemType}.count`]: { $exists: false } },
+                    { [`entry.${itemType}.count`]: null },
+                    { [`entry.${itemType}.count`]: 0 }
+                ]
+            }
+        },
+        {
+            // UI er jonno dorkari fields select kora
+            $project: {
+                schoolName: 1,
+                schoolCode: 1,
+                address: 1,
+                concernMobileNumber: 1,
+                status: { $literal: "Missing" },
+                requestedItem: { $literal: itemType }
+            }
+        }
+    ]);
+    return result;
+});
 exports.attendanceService = {
     createComment,
     getComments,
@@ -188,4 +265,5 @@ exports.attendanceService = {
     getLastAttendance,
     getAttendance,
     getAreaReport,
+    getMissing,
 };

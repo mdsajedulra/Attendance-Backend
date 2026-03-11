@@ -88,6 +88,16 @@ const deleteAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
+// get missing attendance 
+const getMissing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_service_1.attendanceService.getMissing(req.query);
+    (0, sendResponse_1.default)(res, {
+        message: "Missing get Successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 exports.attendanceController = {
     deleteAttendance,
     createComment,
@@ -96,4 +106,5 @@ exports.attendanceController = {
     getLastAttendance,
     getAttendance,
     getAttendanceReport,
+    getMissing
 };

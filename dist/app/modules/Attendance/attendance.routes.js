@@ -13,6 +13,7 @@ attendanceRoutes.get("/get-last", attendance_controller_1.attendanceController.g
 attendanceRoutes.get("/get-comment", attendance_controller_1.attendanceController.getComment);
 attendanceRoutes.delete("/:id", attendance_controller_1.attendanceController.deleteAttendance);
 attendanceRoutes.post("/create-comment", attendance_controller_1.attendanceController.createComment);
+attendanceRoutes.get("/missing", attendance_controller_1.attendanceController.getMissing);
 attendanceRoutes.get("/comment", attendance_controller_1.attendanceController.getComment);
 // attendanceRoutes.get("/", attendanceController.getSingleAttendance);
 exports.default = attendanceRoutes;
