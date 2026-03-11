@@ -186,13 +186,16 @@ const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, functi
     return existBanana;
 });
 // get missing data from attendance
-const getMissing = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { date, district, upozila, union, village } = query;
-    const targetDate = new Date(date);
-    targetDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(date);
-    endDate.setHours(23, 59, 59, 999);
-    // school filter
+const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
+    const { date, // Format: "2026-03-11"
+    itemType, // "banana", "egg", or "banruti"
+    district, upozila, union, village, schoolCode, schoolName } = queryParams;
+    // 1. Date Range Setup (Timezone issue solve korar jonno)
+    const startOfDay = new Date(date);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+    // 2. School matching filters
     const schoolFilter = {};
     if (district)
         schoolFilter["address.district"] = district;
@@ -202,15 +205,67 @@ const getMissing = (query) => __awaiter(void 0, void 0, void 0, function* () {
         schoolFilter["address.union"] = union;
     if (village)
         schoolFilter["address.village"] = village;
-    // all schools
-    const schools = yield school_model_1.default.find(schoolFilter).lean();
-    // submitted schools
-    const submitted = yield attendance_model_1.Attendance.find({
-        date: { $gte: targetDate, $lte: endDate },
-    }).distinct("schoolId");
-    // missing
-    const missing = schools.filter((school) => !submitted.map((id) => id.toString()).includes(school._id.toString()));
-    return missing;
+    if (schoolCode)
+        schoolFilter["schoolCode"] = schoolCode;
+    if (schoolName)
+        schoolFilter["schoolName"] = { $regex: schoolName, $options: "i" };
+    const result = yield school_model_1.default.aggregate([
+        {
+            // Step 1: Filter Schools
+            $match: schoolFilter
+        },
+        {
+            // Step 2: Lookup with Date Range
+            $lookup: {
+                from: "attendances", // Apnar collection name "attendances" hole thik ache
+                let: { school_id: "$_id" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$schoolId", "$$school_id"] },
+                                    // Exact match er bodole range check
+                                    { $gte: ["$date", startOfDay] },
+                                    { $lte: ["$date", endOfDay] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: "submission"
+            }
+        },
+        {
+            $addFields: {
+                entry: { $arrayElemAt: ["$submission", 0] }
+            }
+        },
+        {
+            // Step 3: Specific item missing logic
+            $match: {
+                $or: [
+                    { [`entry.${itemType}.count`]: { $exists: false } },
+                    { [`entry.${itemType}.count`]: null },
+                    { [`entry.${itemType}.count`]: 0 },
+                    { ["entry"]: { $exists: false } } // Jodi oi diner kono entry-i na thake
+                ]
+            }
+        },
+        {
+            // Step 4: Final Output
+            $project: {
+                schoolName: 1,
+                schoolCode: 1,
+                address: 1,
+                concernMobileNumber: 1,
+                status: { $literal: "Missing" },
+                requestedItem: { $literal: itemType },
+                searchDate: { $literal: date }
+            }
+        }
+    ]);
+    return result;
 });
 exports.attendanceService = {
     createComment,
