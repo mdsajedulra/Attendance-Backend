@@ -79,7 +79,7 @@ const getAttendance = async (query: any) => {
     endDate,
   } = query;
 
-  console.log(query.district);
+  
 
   const filter: any = {};
   const schoolFilter: any = {};
@@ -144,12 +144,12 @@ const getAttendance = async (query: any) => {
     })
     .lean();
 
-  console.log(result);
+  // console.log(result);
 
   // remove unmatched populate
   const filtered = result.filter((a) => a.schoolId !== null);
 
-  return filtered;
+  return result;
 };
 
 // get attendance report

@@ -62,7 +62,6 @@ const getLastAttendance = (id) => __awaiter(void 0, void 0, void 0, function* ()
 // });
 const getAttendance = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { type, schoolName, schoolCode, mobile, district, upozila, union, village, date, startDate, endDate, } = query;
-    console.log(query.district);
     const filter = {};
     const schoolFilter = {};
     // attendance type filter
@@ -113,10 +112,10 @@ const getAttendance = (query) => __awaiter(void 0, void 0, void 0, function* () 
         match: schoolFilter,
     })
         .lean();
-    console.log(result);
+    // console.log(result);
     // remove unmatched populate
     const filtered = result.filter((a) => a.schoolId !== null);
-    return filtered;
+    return result;
 });
 // get attendance report
 const getAreaReport = (query) => __awaiter(void 0, void 0, void 0, function* () {
