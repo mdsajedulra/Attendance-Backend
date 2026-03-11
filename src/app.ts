@@ -17,6 +17,7 @@ const allowedOrigins = [
   "http://192.168.0.105",
   "https://admin-dashboard-gamma-inky-62.vercel.app",
   "https://school-snack-stats.lovable.app",
+  "https://sfp.osacabd.org",
 ];
 
 app.use(
