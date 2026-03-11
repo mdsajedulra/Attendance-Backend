@@ -49,8 +49,21 @@ const getAllSchool = (0, catchAsync_1.default)((req, res, next) => __awaiter(voi
         data: result,
     });
 }));
+// update school
+const updateSchool = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    // console.log(id, req.body);
+    const result = yield school_service_1.schoolService.updateSchool(id, req.body);
+    (0, sendResponse_1.default)(res, {
+        message: "school data update successfully",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        success: true,
+        data: result,
+    });
+}));
 exports.schoolController = {
     createSchool,
     schoolLogin,
     getAllSchool,
+    updateSchool
 };

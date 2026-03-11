@@ -37,8 +37,15 @@ const getAllSchool = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield school_model_1.default.find();
     return result;
 });
+// update school data
+const updateSchool = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
+    const result = yield school_model_1.default.findOneAndUpdate({ _id: id }, payload, { new: true });
+    return result;
+});
 exports.schoolService = {
     createSchool,
     schoolLogin,
     getAllSchool,
+    updateSchool
 };

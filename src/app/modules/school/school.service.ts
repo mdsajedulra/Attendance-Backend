@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { ISchool, ISchoolLogin } from "./school.interface";
 import schoolModel from "./school.model";
 
@@ -28,8 +29,17 @@ const getAllSchool = async () => {
   return result;
 };
 
+// update school data
+
+const updateSchool = async (id: ObjectId, payload: Partial<ISchool>) => {
+  console.log(payload);
+  const result = await schoolModel.findOneAndUpdate({_id:id}, payload, {new: true});
+  return result;
+};
+
 export const schoolService = {
   createSchool,
   schoolLogin,
   getAllSchool,
+  updateSchool
 };

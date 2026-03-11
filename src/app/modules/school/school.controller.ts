@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { schoolService } from "./school.service";
+import { ObjectId } from "mongodb";
 
 const createSchool = catchAsync(async (req, res, next) => {
   const payload = req.body;
@@ -39,8 +40,24 @@ const getAllSchool = catchAsync(async (req, res, next) => {
   });
 });
 
+// update school
+const updateSchool = catchAsync(async (req, res, next) => {
+  const id = req.params.id as unknown as ObjectId;
+// console.log(id, req.body);
+  
+  const result = await schoolService.updateSchool(id, req.body);
+  sendResponse(res, {
+    message: "school data update successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+  });
+});
+
+
 export const schoolController = {
   createSchool,
   schoolLogin,
   getAllSchool,
+  updateSchool
 };
