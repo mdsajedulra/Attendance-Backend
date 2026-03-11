@@ -22,31 +22,35 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
     if (!payload.date) {
         throw new Error("Date is required");
     }
-    const startOfDay = (0, moment_timezone_1.default)().tz("Asia/Dhaka").startOf("day").toDate();
-    const endOfDay = (0, moment_timezone_1.default)().tz("Asia/Dhaka").endOf("day").toDate();
-    console.log(startOfDay, endOfDay);
-    console.log(payload);
     if (!payload.schoolId) {
         throw new Error("School Not found");
     }
+    // Start and end of day
+    const startOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").startOf("day").toDate();
+    const endOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
+    // Check if any attendance already exists for this school today
     const existing = yield attendance_model_1.Attendance.findOne({
         schoolId: payload.schoolId,
         date: { $gte: startOfDay, $lte: endOfDay },
     });
-    if (payload.banana && ((_a = existing === null || existing === void 0 ? void 0 : existing.banana) === null || _a === void 0 ? void 0 : _a.submittedAt)) {
+    if (!existing) {
+        // If no document exists yet, create a new one
+        const newAttendance = new attendance_model_1.Attendance(Object.assign(Object.assign({}, payload), { date: new Date(payload.date) }));
+        return yield newAttendance.save();
+    }
+    // Check if specific food items were already submitted
+    if (payload.banana && ((_a = existing.banana) === null || _a === void 0 ? void 0 : _a.submittedAt)) {
         throw new Error("আজ ইতিমধ্যেই Banana submit করা হয়েছে");
     }
-    if (payload.banruti && ((_b = existing === null || existing === void 0 ? void 0 : existing.banruti) === null || _b === void 0 ? void 0 : _b.submittedAt)) {
+    if (payload.banruti && ((_b = existing.banruti) === null || _b === void 0 ? void 0 : _b.submittedAt)) {
         throw new Error("আজ ইতিমধ্যেই Banruti submit করা হয়েছে");
     }
-    if (payload.egg && ((_c = existing === null || existing === void 0 ? void 0 : existing.egg) === null || _c === void 0 ? void 0 : _c.submittedAt)) {
+    if (payload.egg && ((_c = existing.egg) === null || _c === void 0 ? void 0 : _c.submittedAt)) {
         throw new Error("আজ ইতিমধ্যেই Egg submit করা হয়েছে");
     }
-    const result = yield attendance_model_1.Attendance.findOneAndUpdate({
-        schoolId: payload === null || payload === void 0 ? void 0 : payload.schoolId,
-        date: payload === null || payload === void 0 ? void 0 : payload.date,
-    }, { $set: payload }, { upsert: true, new: true, runValidators: true });
-    return result;
+    // Update existing document
+    const updated = yield attendance_model_1.Attendance.findByIdAndUpdate(existing._id, { $set: payload }, { new: true, runValidators: true });
+    return updated;
 });
 // get last attendance
 const getLastAttendance = (id) => __awaiter(void 0, void 0, void 0, function* () {

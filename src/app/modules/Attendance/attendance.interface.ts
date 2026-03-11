@@ -1,4 +1,3 @@
-
 import { Types } from "mongoose";
 
 interface IFoodItem {
@@ -11,10 +10,7 @@ export interface IAttendance {
 
   schoolId: Types.ObjectId;
 
-  date:{
-    type: Date;
-    required: true;
-  };
+  date: Date;
 
   banana?: IFoodItem;
 
@@ -23,26 +19,9 @@ export interface IAttendance {
   egg?: IFoodItem;
 
   createdAt?: Date;
-  
+
   updatedAt?: Date;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export interface IBananaAttendance {
   schoolId: string;

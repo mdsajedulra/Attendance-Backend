@@ -12,41 +12,48 @@ const createAttendance = async (payload: IAttendance) => {
   if (!payload.date) {
     throw new Error("Date is required");
   }
-  const startOfDay = moment().tz("Asia/Dhaka").startOf("day").toDate();
-  const endOfDay = moment().tz("Asia/Dhaka").endOf("day").toDate();
-  console.log(startOfDay, endOfDay);
-
-  console.log(payload);
-
   if (!payload.schoolId) {
     throw new Error("School Not found");
   }
+
+  // Start and end of day
+  const startOfDay = moment(payload.date).tz("Asia/Dhaka").startOf("day").toDate();
+  const endOfDay = moment(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
+
+  // Check if any attendance already exists for this school today
   const existing = await Attendance.findOne({
     schoolId: payload.schoolId,
     date: { $gte: startOfDay, $lte: endOfDay },
   });
-  if (payload.banana && existing?.banana?.submittedAt) {
+
+  if (!existing) {
+    // If no document exists yet, create a new one
+    const newAttendance = new Attendance({
+      ...payload,
+      date: new Date(payload.date),
+    });
+    return await newAttendance.save();
+  }
+
+  // Check if specific food items were already submitted
+  if (payload.banana && existing.banana?.submittedAt) {
     throw new Error("আজ ইতিমধ্যেই Banana submit করা হয়েছে");
   }
-
-  if (payload.banruti && existing?.banruti?.submittedAt) {
+  if (payload.banruti && existing.banruti?.submittedAt) {
     throw new Error("আজ ইতিমধ্যেই Banruti submit করা হয়েছে");
   }
-
-  if (payload.egg && existing?.egg?.submittedAt) {
+  if (payload.egg && existing.egg?.submittedAt) {
     throw new Error("আজ ইতিমধ্যেই Egg submit করা হয়েছে");
   }
 
-  const result = await Attendance.findOneAndUpdate(
-    {
-      schoolId: payload?.schoolId,
-      date: payload?.date,
-    },
+  // Update existing document
+  const updated = await Attendance.findByIdAndUpdate(
+    existing._id,
     { $set: payload },
-    { upsert: true, new: true, runValidators: true },
+    { new: true, runValidators: true }
   );
 
-  return result;
+  return updated;
 };
 
 // get last attendance
