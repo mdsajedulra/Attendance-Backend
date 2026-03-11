@@ -97,12 +97,12 @@ const getAttendance = async (query: any) => {
     const end = new Date(date);
     end.setHours(23, 59, 59, 999);
 
-    filter.date = { $gte: start, $lte: end };
+    filter.createdAt = { $gte: start, $lte: end };
   }
 
   // date range
   if (startDate && endDate) {
-    filter.date = {
+    filter.createdAt = {
       $gte: new Date(startDate),
       $lte: new Date(endDate),
     };

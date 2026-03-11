@@ -75,11 +75,11 @@ const getAttendance = (query) => __awaiter(void 0, void 0, void 0, function* () 
         start.setHours(0, 0, 0, 0);
         const end = new Date(date);
         end.setHours(23, 59, 59, 999);
-        filter.date = { $gte: start, $lte: end };
+        filter.createdAt = { $gte: start, $lte: end };
     }
     // date range
     if (startDate && endDate) {
-        filter.date = {
+        filter.createdAt = {
             $gte: new Date(startDate),
             $lte: new Date(endDate),
         };
