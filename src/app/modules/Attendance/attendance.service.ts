@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 
 import { IAttendance, IComment } from "./attendance.interface";
 import { Attendance, attendanceModel } from "./attendance.model";
-import schoolModel from "../school/school.model";
+
 
 // reform and redesign
 
@@ -12,11 +12,15 @@ const createAttendance = async (payload: IAttendance) => {
   const startOfDay = moment().tz("Asia/Dhaka").startOf("day").toDate();
   const endOfDay = moment().tz("Asia/Dhaka").endOf("day").toDate();
 
+  console.log(payload);
+
+  if (!payload.schoolId) {
+    throw new Error("School Not found");
+  }
   const existing = await Attendance.findOne({
     schoolId: payload.schoolId,
     createdAt: { $gte: startOfDay, $lte: endOfDay },
   });
-
   if (payload.banana && existing?.banana?.submittedAt) {
     throw new Error("আজ ইতিমধ্যেই Banana submit করা হয়েছে");
   }
@@ -44,6 +48,10 @@ const createAttendance = async (payload: IAttendance) => {
 // get last attendance
 
 const getLastAttendance = async (id: ObjectId) => {
+  console.log(id);
+  if (!id) {
+    throw new Error("input id");
+  }
   const result = await Attendance.findOne({ schoolId: id }).sort({
     createdAt: -1,
   });
@@ -226,6 +234,7 @@ const getComments = async () => {
 
 const deleteAttendanceService = async (id: string) => {
   const existBanana = await Attendance.deleteOne({ _id: id });
+  return existBanana;
 };
 
 export const attendanceService = {
