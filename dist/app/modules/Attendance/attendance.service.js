@@ -20,6 +20,10 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
     var _a, _b, _c;
     const startOfDay = (0, moment_timezone_1.default)().tz("Asia/Dhaka").startOf("day").toDate();
     const endOfDay = (0, moment_timezone_1.default)().tz("Asia/Dhaka").endOf("day").toDate();
+    console.log(payload);
+    if (!payload.schoolId) {
+        throw new Error("School Not found");
+    }
     const existing = yield attendance_model_1.Attendance.findOne({
         schoolId: payload.schoolId,
         createdAt: { $gte: startOfDay, $lte: endOfDay },
@@ -41,6 +45,10 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
 });
 // get last attendance
 const getLastAttendance = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id);
+    if (!id) {
+        throw new Error("input id");
+    }
     const result = yield attendance_model_1.Attendance.findOne({ schoolId: id }).sort({
         createdAt: -1,
     });
@@ -171,6 +179,7 @@ const getComments = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const existBanana = yield attendance_model_1.Attendance.deleteOne({ _id: id });
+    return existBanana;
 });
 exports.attendanceService = {
     createComment,
