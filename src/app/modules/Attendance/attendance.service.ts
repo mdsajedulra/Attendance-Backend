@@ -244,8 +244,8 @@ const deleteAttendanceService = async (id: string) => {
 
 const getMissing = async (queryParams: any) => {
   const { 
-    date,        // Required: "YYYY-MM-DD"
-    itemType,    // Required: "banana", "egg", or "banruti"
+    date,        // Format: "2026-03-11"
+    itemType,    // "banana", "egg", or "banruti"
     district, 
     upozila, 
     union, 
@@ -254,11 +254,14 @@ const getMissing = async (queryParams: any) => {
     schoolName 
   } = queryParams;
 
-  // 1. Date formatting (Start of the specific day)
-  const searchDate = new Date(date);
-  searchDate.setUTCHours(0, 0, 0, 0);
+  // 1. Date Range Setup (Timezone issue solve korar jonno)
+  const startOfDay = new Date(date);
+  startOfDay.setUTCHours(0, 0, 0, 0);
 
-  // 2. School matching filters (Dynamic)
+  const endOfDay = new Date(date);
+  endOfDay.setUTCHours(23, 59, 59, 999);
+
+  // 2. School matching filters
   const schoolFilter: Record<string, any> = {};
   
   if (district) schoolFilter["address.district"] = district;
@@ -270,13 +273,13 @@ const getMissing = async (queryParams: any) => {
 
   const result = await schoolModel.aggregate([
     {
-      // Prothome school gulo filter kora (Location/Code/Name onujayi)
+      // Step 1: Filter Schools
       $match: schoolFilter
     },
     {
-      // Attendance data join kora (Oi specific diner jonno)
+      // Step 2: Lookup with Date Range
       $lookup: {
-        from: "attendances",
+        from: "attendances", // Apnar collection name "attendances" hole thik ache
         let: { school_id: "$_id" },
         pipeline: [
           {
@@ -284,7 +287,9 @@ const getMissing = async (queryParams: any) => {
               $expr: {
                 $and: [
                   { $eq: ["$schoolId", "$$school_id"] },
-                  { $eq: ["$date", searchDate] }
+                  // Exact match er bodole range check
+                  { $gte: ["$date", startOfDay] },
+                  { $lte: ["$date", endOfDay] }
                 ]
               }
             }
@@ -299,24 +304,26 @@ const getMissing = async (queryParams: any) => {
       }
     },
     {
-      // logic: Jodi oi specific item-er entry na thake ba count zero hoy
+      // Step 3: Specific item missing logic
       $match: {
         $or: [
           { [`entry.${itemType}.count`]: { $exists: false } },
           { [`entry.${itemType}.count`]: null },
-          { [`entry.${itemType}.count`]: 0 }
+          { [`entry.${itemType}.count`]: 0 },
+          { entry: { $exists: false } } // Jodi oi diner kono entry-i na thake
         ]
       }
     },
     {
-      // UI er jonno dorkari fields select kora
+      // Step 4: Final Output
       $project: {
         schoolName: 1,
         schoolCode: 1,
         address: 1,
         concernMobileNumber: 1,
         status: { $literal: "Missing" },
-        requestedItem: { $literal: itemType }
+        requestedItem: { $literal: itemType },
+        searchDate: { $literal: date }
       }
     }
   ]);
