@@ -98,6 +98,7 @@ const getMissing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+// insert bulk attendance
 exports.attendanceController = {
     deleteAttendance,
     createComment,
@@ -106,5 +107,5 @@ exports.attendanceController = {
     getLastAttendance,
     getAttendance,
     getAttendanceReport,
-    getMissing
+    getMissing,
 };

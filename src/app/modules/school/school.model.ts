@@ -2,11 +2,12 @@ import mongoose, { Schema } from "mongoose";
 import { ISchool } from "./school.interface";
 
 const AddressSchema: Schema = new Schema({
-  village: { type: String, required: true },
+  
   union: { type: String, required: true },
-  upozila: { type: String, required: true },
+  upazila: { type: String, required: true },
   district: { type: String, required: true },
-  googleLocation: { type: String, required: false },
+  division: { type: String, required: true },
+  
 });
 
 const SchoolSchema: Schema = new Schema(
@@ -15,10 +16,14 @@ const SchoolSchema: Schema = new Schema(
     schoolCode: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     concernMobileNumber: { type: String, required: true },
-    totalEmployees: { type: Number, required: true },
+    concernName: { type: String, required: true },
+    
+    totalTeacher: { type: Number, required: true },
+    totalStudent: {type: Number, required: true},
     address: { type: AddressSchema, required: true },
+    showDetails: { type: String, required: false },
   },
-  { timestamps: true }
+  { timestamps: true, strict: true },
 );
 
 export default mongoose.model<ISchool>("School", SchoolSchema);

@@ -29,6 +29,11 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
     const startOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").startOf("day").toDate();
     const endOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
     // Check if any attendance already exists for this school today
+    console.log(payload.schoolId);
+    const existingSchool = yield school_model_1.default.findById(payload.schoolId);
+    // console.log("existingSchool" , existingSchool);
+    if (!existingSchool)
+        throw new Error("School Not Found so not possible to submit any entry");
     const existing = yield attendance_model_1.Attendance.findOne({
         schoolId: payload.schoolId,
         date: { $gte: startOfDay, $lte: endOfDay },

@@ -80,7 +80,7 @@ const getComment = catchAsync(async (req, res) => {
 
 const deleteAttendance = catchAsync(async (req, res) => {
   console.log(req.params.id);
-  const result = await attendanceService.deleteAttendanceService(req.params.id);
+  const result = await attendanceService.deleteAttendanceService(req.params.id as string);
   sendResponse(res, {
     message: "Delete Attendance Successfully",
     statusCode: StatusCodes.OK,
@@ -103,6 +103,11 @@ const getMissing = catchAsync(async (req, res) => {
   });
 });
 
+
+// insert bulk attendance
+
+
+
 export const attendanceController = {
   deleteAttendance,
 
@@ -115,4 +120,6 @@ getComment,
   getAttendanceReport,
 
   getMissing
+  ,
+  
 };

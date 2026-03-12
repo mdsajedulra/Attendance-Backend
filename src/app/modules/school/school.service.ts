@@ -33,13 +33,25 @@ const getAllSchool = async () => {
 
 const updateSchool = async (id: ObjectId, payload: Partial<ISchool>) => {
   console.log(payload);
-  const result = await schoolModel.findOneAndUpdate({_id:id}, payload, {new: true});
+  const result = await schoolModel.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
   return result;
+};
+
+// create bulk school
+
+const bulkSchool = async (payload: ISchool[]) => {
+
+  const result = await schoolModel.insertMany(payload, { ordered: false });
+  if(result.length==0) throw new Error("Some went wrong, check exel file")
+  return result
 };
 
 export const schoolService = {
   createSchool,
   schoolLogin,
   getAllSchool,
-  updateSchool
+  updateSchool,
+  bulkSchool,
 };

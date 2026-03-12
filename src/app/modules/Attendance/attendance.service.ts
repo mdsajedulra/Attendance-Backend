@@ -21,6 +21,11 @@ const createAttendance = async (payload: IAttendance) => {
   const endOfDay = moment(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
 
   // Check if any attendance already exists for this school today
+  console.log(payload.schoolId);
+  const existingSchool = await schoolModel.findById(payload.schoolId)
+  
+  // console.log("existingSchool" , existingSchool);
+  if(!existingSchool) throw new Error("School Not Found so not possible to submit any entry")
   const existing = await Attendance.findOne({
     schoolId: payload.schoolId,
     date: { $gte: startOfDay, $lte: endOfDay },
@@ -336,6 +341,9 @@ const getMissing = async (queryParams: any) => {
 
   return result;
 };
+
+
+
 
 export const attendanceService = {
   createComment,

@@ -5,6 +5,7 @@ const attendanceRoutes = Router();
 
 attendanceRoutes.post("/", attendanceController.createAttendance);
 
+
 // get attendance all by filter
 
 attendanceRoutes.get("/", attendanceController.getAttendance);

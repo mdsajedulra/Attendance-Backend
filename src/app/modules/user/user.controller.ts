@@ -45,7 +45,7 @@ const getAllUser = catchAsync(async (req, res, next) => {
 // block user
 
 const blockUser = catchAsync(async (req, res, next) => {
-  const result = await userService.blockUser(req.params.userId);
+  const result = await userService.blockUser(req.params.userId as string);
   sendResponse(res, {
     message: "user block Seccussfully",
     statusCode: StatusCodes.OK,

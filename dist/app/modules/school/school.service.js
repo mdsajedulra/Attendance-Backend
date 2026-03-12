@@ -40,12 +40,22 @@ const getAllSchool = () => __awaiter(void 0, void 0, void 0, function* () {
 // update school data
 const updateSchool = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(payload);
-    const result = yield school_model_1.default.findOneAndUpdate({ _id: id }, payload, { new: true });
+    const result = yield school_model_1.default.findOneAndUpdate({ _id: id }, payload, {
+        new: true,
+    });
+    return result;
+});
+// create bulk school
+const bulkSchool = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield school_model_1.default.insertMany(payload, { ordered: false });
+    if (result.length == 0)
+        throw new Error("Some went wrong, check exel file");
     return result;
 });
 exports.schoolService = {
     createSchool,
     schoolLogin,
     getAllSchool,
-    updateSchool
+    updateSchool,
+    bulkSchool,
 };

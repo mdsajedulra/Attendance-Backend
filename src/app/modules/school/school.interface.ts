@@ -1,9 +1,10 @@
 interface IAddress {
-  village: string;
+  
   union: string;
-  upozila: string;
+  upazila: string;
   district: string;
-  googleLocation: string; // could be "lat,long" or URL
+  division: string
+  
 }
 
 export interface ISchool extends Document {
@@ -11,8 +12,11 @@ export interface ISchool extends Document {
   schoolCode: string;
   password: string;
   concernMobileNumber: string;
-  totalEmployees: number;
+  concernName: string;
+  totalTeacher: number;
+  totalStudent: number;
   address: IAddress;
+  showDetails: string;
 }
 
 interface ISchoolLogin {
