@@ -34,6 +34,7 @@ const AttendanceSchema = new Schema(
       count: Number,
       submittedAt: Date,
     },
+    
   },
   {
     timestamps: true,
@@ -91,6 +92,7 @@ const CommentSchema: Schema = new Schema(
   {
     schoolId: { type: Schema.Types.ObjectId, ref: "School", required: true },
     comment: { type: String, required: true },
+    isRead: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: true, // createdAt, updatedAt

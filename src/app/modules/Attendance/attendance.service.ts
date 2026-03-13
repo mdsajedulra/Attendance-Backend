@@ -17,15 +17,19 @@ const createAttendance = async (payload: IAttendance) => {
   }
 
   // Start and end of day
-  const startOfDay = moment(payload.date).tz("Asia/Dhaka").startOf("day").toDate();
+  const startOfDay = moment(payload.date)
+    .tz("Asia/Dhaka")
+    .startOf("day")
+    .toDate();
   const endOfDay = moment(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
 
   // Check if any attendance already exists for this school today
   console.log(payload.schoolId);
-  const existingSchool = await schoolModel.findById(payload.schoolId)
-  
+  const existingSchool = await schoolModel.findById(payload.schoolId);
+
   // console.log("existingSchool" , existingSchool);
-  if(!existingSchool) throw new Error("School Not Found so not possible to submit any entry")
+  if (!existingSchool)
+    throw new Error("School Not Found so not possible to submit any entry");
   const existing = await Attendance.findOne({
     schoolId: payload.schoolId,
     date: { $gte: startOfDay, $lte: endOfDay },
@@ -55,7 +59,7 @@ const createAttendance = async (payload: IAttendance) => {
   const updated = await Attendance.findByIdAndUpdate(
     existing._id,
     { $set: payload },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   return updated;
@@ -242,7 +246,7 @@ async function createComment(payload: any) {
 }
 
 const getComments = async () => {
-  const result = await attendanceModel.commentModel.find();
+  const result = await attendanceModel.commentModel.find().populate("schoolId");
   return result;
 };
 
@@ -254,15 +258,15 @@ const deleteAttendanceService = async (id: string) => {
 // get missing data from attendance
 
 const getMissing = async (queryParams: any) => {
-  const { 
-    date,        // Format: "2026-03-11"
-    itemType,    // "banana", "egg", or "banruti"
-    district, 
-    upozila, 
-    union, 
-    village, 
-    schoolCode, 
-    schoolName 
+  const {
+    date, // Format: "2026-03-11"
+    itemType, // "banana", "egg", or "banruti"
+    district,
+    upozila,
+    union,
+    village,
+    schoolCode,
+    schoolName,
   } = queryParams;
 
   // 1. Date Range Setup (Timezone issue solve korar jonno)
@@ -274,18 +278,19 @@ const getMissing = async (queryParams: any) => {
 
   // 2. School matching filters
   const schoolFilter: Record<string, any> = {};
-  
+
   if (district) schoolFilter["address.district"] = district;
   if (upozila) schoolFilter["address.upozila"] = upozila;
   if (union) schoolFilter["address.union"] = union;
   if (village) schoolFilter["address.village"] = village;
   if (schoolCode) schoolFilter["schoolCode"] = schoolCode;
-  if (schoolName) schoolFilter["schoolName"] = { $regex: schoolName, $options: "i" };
+  if (schoolName)
+    schoolFilter["schoolName"] = { $regex: schoolName, $options: "i" };
 
   const result = await schoolModel.aggregate([
     {
       // Step 1: Filter Schools
-      $match: schoolFilter
+      $match: schoolFilter,
     },
     {
       // Step 2: Lookup with Date Range
@@ -300,19 +305,19 @@ const getMissing = async (queryParams: any) => {
                   { $eq: ["$schoolId", "$$school_id"] },
                   // Exact match er bodole range check
                   { $gte: ["$date", startOfDay] },
-                  { $lte: ["$date", endOfDay] }
-                ]
-              }
-            }
-          }
+                  { $lte: ["$date", endOfDay] },
+                ],
+              },
+            },
+          },
         ],
-        as: "submission"
-      }
+        as: "submission",
+      },
     },
     {
       $addFields: {
-        entry: { $arrayElemAt: ["$submission", 0] }
-      }
+        entry: { $arrayElemAt: ["$submission", 0] },
+      },
     },
     {
       // Step 3: Specific item missing logic
@@ -321,9 +326,9 @@ const getMissing = async (queryParams: any) => {
           { [`entry.${itemType}.count`]: { $exists: false } },
           { [`entry.${itemType}.count`]: null },
           { [`entry.${itemType}.count`]: 0 },
-          { ["entry"]: { $exists: false } } // Jodi oi diner kono entry-i na thake
-        ]
-      }
+          { ["entry"]: { $exists: false } }, // Jodi oi diner kono entry-i na thake
+        ],
+      },
     },
     {
       // Step 4: Final Output
@@ -334,16 +339,32 @@ const getMissing = async (queryParams: any) => {
         concernMobileNumber: 1,
         status: { $literal: "Missing" },
         requestedItem: { $literal: itemType },
-        searchDate: { $literal: date }
-      }
-    }
+        searchDate: { $literal: date },
+      },
+    },
   ]);
 
   return result;
 };
 
+// update comment read comment
 
+const updateComment = async (id: any) => {
+  const getComment = await attendanceModel.commentModel.findByIdAndUpdate(
+    id,
+    {
+      isRead: true,
+    },
+    { new: true },
+  );
 
+  return getComment;
+};
+
+const getSingleComment = async (id: any) => {
+  const getSingleComment = await attendanceModel.commentModel.findById(id).populate("schoolId")
+  return getSingleComment;
+};
 
 export const attendanceService = {
   createComment,
@@ -356,4 +377,6 @@ export const attendanceService = {
 
   getAreaReport,
   getMissing,
+  updateComment,
+  getSingleComment
 };

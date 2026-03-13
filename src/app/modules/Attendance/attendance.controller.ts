@@ -103,9 +103,31 @@ const getMissing = catchAsync(async (req, res) => {
   });
 });
 
+// update comment
 
-// insert bulk attendance
+const updateComment = catchAsync(async (req, res) => {
 
+  const result = await attendanceService.updateComment(req?.params?.id);
+  sendResponse(res, {
+    message: "Update Comment Successfully",
+    statusCode: StatusCodes.ACCEPTED,
+    success: true,
+    data: result,
+  });
+});
+
+// get single comment 
+
+const getSingleComment = catchAsync(async (req, res) => {
+
+  const result = await attendanceService.getSingleComment(req?.params?.id);
+  sendResponse(res, {
+    message: "single Comment get Successfully",
+    statusCode: StatusCodes.ACCEPTED,
+    success: true,
+    data: result,
+  });
+});
 
 
 export const attendanceController = {
@@ -121,5 +143,7 @@ getComment,
 
   getMissing
   ,
+  updateComment, 
+  getSingleComment
   
 };

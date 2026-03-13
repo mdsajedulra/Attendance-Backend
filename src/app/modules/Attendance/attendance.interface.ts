@@ -41,5 +41,6 @@ export interface IEggAttendance {
 export interface IComment {
   schoolId: string;
   comment: string;
+  isRead: boolean;
   timestamp?: Date;
 }

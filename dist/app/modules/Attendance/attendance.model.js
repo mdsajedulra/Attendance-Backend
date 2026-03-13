@@ -81,6 +81,7 @@ const EggAttendanceSchema = new mongoose_1.Schema({
 const CommentSchema = new mongoose_1.Schema({
     schoolId: { type: mongoose_1.Schema.Types.ObjectId, ref: "School", required: true },
     comment: { type: String, required: true },
+    isRead: { type: Boolean, required: true, default: false },
 }, {
     timestamps: true, // createdAt, updatedAt
 });

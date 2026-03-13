@@ -98,7 +98,28 @@ const getMissing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
-// insert bulk attendance
+// update comment
+const updateComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const result = yield attendance_service_1.attendanceService.updateComment((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id);
+    (0, sendResponse_1.default)(res, {
+        message: "Update Comment Successfully",
+        statusCode: http_status_codes_1.StatusCodes.ACCEPTED,
+        success: true,
+        data: result,
+    });
+}));
+// get single comment 
+const getSingleComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const result = yield attendance_service_1.attendanceService.getSingleComment((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id);
+    (0, sendResponse_1.default)(res, {
+        message: "single Comment get Successfully",
+        statusCode: http_status_codes_1.StatusCodes.ACCEPTED,
+        success: true,
+        data: result,
+    });
+}));
 exports.attendanceController = {
     deleteAttendance,
     createComment,
@@ -108,4 +129,6 @@ exports.attendanceController = {
     getAttendance,
     getAttendanceReport,
     getMissing,
+    updateComment,
+    getSingleComment
 };

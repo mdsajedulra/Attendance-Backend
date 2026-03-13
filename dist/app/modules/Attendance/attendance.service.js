@@ -26,7 +26,10 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
         throw new Error("School Not found");
     }
     // Start and end of day
-    const startOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").startOf("day").toDate();
+    const startOfDay = (0, moment_timezone_1.default)(payload.date)
+        .tz("Asia/Dhaka")
+        .startOf("day")
+        .toDate();
     const endOfDay = (0, moment_timezone_1.default)(payload.date).tz("Asia/Dhaka").endOf("day").toDate();
     // Check if any attendance already exists for this school today
     console.log(payload.schoolId);
@@ -187,7 +190,7 @@ function createComment(payload) {
     });
 }
 const getComments = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_model_1.attendanceModel.commentModel.find();
+    const result = yield attendance_model_1.attendanceModel.commentModel.find().populate("schoolId");
     return result;
 });
 const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -198,7 +201,7 @@ const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, functi
 const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
     const { date, // Format: "2026-03-11"
     itemType, // "banana", "egg", or "banruti"
-    district, upozila, union, village, schoolCode, schoolName } = queryParams;
+    district, upozila, union, village, schoolCode, schoolName, } = queryParams;
     // 1. Date Range Setup (Timezone issue solve korar jonno)
     const startOfDay = new Date(date);
     startOfDay.setUTCHours(0, 0, 0, 0);
@@ -221,7 +224,7 @@ const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* 
     const result = yield school_model_1.default.aggregate([
         {
             // Step 1: Filter Schools
-            $match: schoolFilter
+            $match: schoolFilter,
         },
         {
             // Step 2: Lookup with Date Range
@@ -236,19 +239,19 @@ const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* 
                                     { $eq: ["$schoolId", "$$school_id"] },
                                     // Exact match er bodole range check
                                     { $gte: ["$date", startOfDay] },
-                                    { $lte: ["$date", endOfDay] }
-                                ]
-                            }
-                        }
-                    }
+                                    { $lte: ["$date", endOfDay] },
+                                ],
+                            },
+                        },
+                    },
                 ],
-                as: "submission"
-            }
+                as: "submission",
+            },
         },
         {
             $addFields: {
-                entry: { $arrayElemAt: ["$submission", 0] }
-            }
+                entry: { $arrayElemAt: ["$submission", 0] },
+            },
         },
         {
             // Step 3: Specific item missing logic
@@ -257,9 +260,9 @@ const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* 
                     { [`entry.${itemType}.count`]: { $exists: false } },
                     { [`entry.${itemType}.count`]: null },
                     { [`entry.${itemType}.count`]: 0 },
-                    { ["entry"]: { $exists: false } } // Jodi oi diner kono entry-i na thake
-                ]
-            }
+                    { ["entry"]: { $exists: false } }, // Jodi oi diner kono entry-i na thake
+                ],
+            },
         },
         {
             // Step 4: Final Output
@@ -270,11 +273,22 @@ const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* 
                 concernMobileNumber: 1,
                 status: { $literal: "Missing" },
                 requestedItem: { $literal: itemType },
-                searchDate: { $literal: date }
-            }
-        }
+                searchDate: { $literal: date },
+            },
+        },
     ]);
     return result;
+});
+// update comment read comment
+const updateComment = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const getComment = yield attendance_model_1.attendanceModel.commentModel.findByIdAndUpdate(id, {
+        isRead: true,
+    }, { new: true });
+    return getComment;
+});
+const getSingleComment = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const getSingleComment = yield attendance_model_1.attendanceModel.commentModel.findById(id).populate("schoolId");
+    return getSingleComment;
 });
 exports.attendanceService = {
     createComment,
@@ -285,4 +299,6 @@ exports.attendanceService = {
     getAttendance,
     getAreaReport,
     getMissing,
+    updateComment,
+    getSingleComment
 };
