@@ -19,11 +19,11 @@ const createContactInfo = (payload) => {
     return result;
 };
 const getContactInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield contactInfo_model_1.default.find();
+    const result = yield contactInfo_model_1.default.findOne();
     return result;
 });
 const updateContactInfo = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield contactInfo_model_1.default.findByIdAndUpdate("69ad2c601c7bdf3060faaf8e", payload, { new: true });
+    const result = yield contactInfo_model_1.default.findByIdAndUpdate(payload.id, payload, { new: true });
     return result;
 });
 exports.contactInfoService = {

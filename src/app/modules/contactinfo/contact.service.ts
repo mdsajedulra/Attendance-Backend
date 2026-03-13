@@ -7,13 +7,13 @@ const createContactInfo = (payload: IContactInfo) => {
 };
 
 const getContactInfo = async () => {
-  const result = await contactInfoModel.find();
+  const result = await contactInfoModel.findOne();
   return result;
 };
 
 const updateContactInfo = async (payload: IContactInfo) => {
   const result = await contactInfoModel.findByIdAndUpdate(
-    "69ad2c601c7bdf3060faaf8e",
+    payload.id,
     payload,
     { new: true },
   );
