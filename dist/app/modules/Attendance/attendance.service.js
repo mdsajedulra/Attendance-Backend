@@ -60,6 +60,11 @@ const createAttendance = (payload) => __awaiter(void 0, void 0, void 0, function
     const updated = yield attendance_model_1.Attendance.findByIdAndUpdate(existing._id, { $set: payload }, { new: true, runValidators: true });
     return updated;
 });
+// update Attendance
+const updateAttencance = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_model_1.Attendance.findByIdAndUpdate(id, payload, { new: true });
+    return result;
+});
 // get last attendance
 const getLastAttendance = (id) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(id);
@@ -189,10 +194,6 @@ function createComment(payload) {
         return result;
     });
 }
-const getComments = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield attendance_model_1.attendanceModel.commentModel.find().populate("schoolId");
-    return result;
-});
 const deleteAttendanceService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const existBanana = yield attendance_model_1.Attendance.deleteOne({ _id: id });
     return existBanana;
@@ -279,6 +280,14 @@ const getMissing = (queryParams) => __awaiter(void 0, void 0, void 0, function* 
     ]);
     return result;
 });
+// get all comment
+const getComments = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield attendance_model_1.attendanceModel.commentModel
+        .find()
+        .sort({ createdAt: "asc" })
+        .populate("schoolId");
+    return result;
+});
 // update comment read comment
 const updateComment = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const getComment = yield attendance_model_1.attendanceModel.commentModel.findByIdAndUpdate(id, {
@@ -287,7 +296,9 @@ const updateComment = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return getComment;
 });
 const getSingleComment = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const getSingleComment = yield attendance_model_1.attendanceModel.commentModel.findById(id).populate("schoolId");
+    const getSingleComment = yield attendance_model_1.attendanceModel.commentModel
+        .findById(id)
+        .populate("schoolId");
     return getSingleComment;
 });
 exports.attendanceService = {
@@ -300,5 +311,6 @@ exports.attendanceService = {
     getAreaReport,
     getMissing,
     updateComment,
-    getSingleComment
+    getSingleComment,
+    updateAttencance,
 };

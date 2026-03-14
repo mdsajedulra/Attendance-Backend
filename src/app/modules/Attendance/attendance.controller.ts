@@ -16,6 +16,17 @@ const createAttendance = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const updateAttendance = catchAsync(async (req, res) => {
+  const id = req.params.id as unknown as ObjectId;
+
+  const result = await attendanceService.updateAttencance(id, req.body);
+  sendResponse(res, {
+    message: "Attendance updated successfully",
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    data: result,
+  });
+});
 
 const getAttendance = catchAsync(async (req, res) => {
   const result = await attendanceService.getAttendance(req.query);
@@ -64,7 +75,6 @@ const createComment = catchAsync(async (req, res) => {
   });
 });
 const getComment = catchAsync(async (req, res) => {
-
   const result = await attendanceService.getComments();
   sendResponse(res, {
     message: "Comment added successfully",
@@ -74,13 +84,13 @@ const getComment = catchAsync(async (req, res) => {
   });
 });
 
-
-
 // delete attendance
 
 const deleteAttendance = catchAsync(async (req, res) => {
   console.log(req.params.id);
-  const result = await attendanceService.deleteAttendanceService(req.params.id as string);
+  const result = await attendanceService.deleteAttendanceService(
+    req.params.id as string,
+  );
   sendResponse(res, {
     message: "Delete Attendance Successfully",
     statusCode: StatusCodes.OK,
@@ -89,11 +99,9 @@ const deleteAttendance = catchAsync(async (req, res) => {
   });
 });
 
-// get missing attendance 
-
+// get missing attendance
 
 const getMissing = catchAsync(async (req, res) => {
-
   const result = await attendanceService.getMissing(req.query);
   sendResponse(res, {
     message: "Missing get Successfully",
@@ -106,7 +114,6 @@ const getMissing = catchAsync(async (req, res) => {
 // update comment
 
 const updateComment = catchAsync(async (req, res) => {
-
   const result = await attendanceService.updateComment(req?.params?.id);
   sendResponse(res, {
     message: "Update Comment Successfully",
@@ -116,10 +123,9 @@ const updateComment = catchAsync(async (req, res) => {
   });
 });
 
-// get single comment 
+// get single comment
 
 const getSingleComment = catchAsync(async (req, res) => {
-
   const result = await attendanceService.getSingleComment(req?.params?.id);
   sendResponse(res, {
     message: "single Comment get Successfully",
@@ -129,21 +135,19 @@ const getSingleComment = catchAsync(async (req, res) => {
   });
 });
 
-
 export const attendanceController = {
   deleteAttendance,
 
   createComment,
-getComment,
+  getComment,
 
   createAttendance,
   getLastAttendance,
   getAttendance,
   getAttendanceReport,
 
-  getMissing
-  ,
-  updateComment, 
-  getSingleComment
-  
+  getMissing,
+  updateComment,
+  getSingleComment,
+  updateAttendance,
 };

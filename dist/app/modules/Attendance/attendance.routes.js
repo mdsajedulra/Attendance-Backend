@@ -6,6 +6,7 @@ const attendanceRoutes = (0, express_1.Router)();
 attendanceRoutes.post("/", attendance_controller_1.attendanceController.createAttendance);
 // get attendance all by filter
 attendanceRoutes.get("/", attendance_controller_1.attendanceController.getAttendance);
+attendanceRoutes.patch("/:id", attendance_controller_1.attendanceController.updateAttendance);
 attendanceRoutes.get("/report", attendance_controller_1.attendanceController.getAttendanceReport);
 // get last attendacne
 attendanceRoutes.get("/get-last", attendance_controller_1.attendanceController.getLastAttendance);

@@ -28,6 +28,16 @@ const createAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
+const updateAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const result = yield attendance_service_1.attendanceService.updateAttencance(id, req.body);
+    (0, sendResponse_1.default)(res, {
+        message: "Attendance updated successfully",
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        success: true,
+        data: result,
+    });
+}));
 const getAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield attendance_service_1.attendanceService.getAttendance(req.query);
     (0, sendResponse_1.default)(res, {
@@ -88,7 +98,7 @@ const deleteAttendance = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
-// get missing attendance 
+// get missing attendance
 const getMissing = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield attendance_service_1.attendanceService.getMissing(req.query);
     (0, sendResponse_1.default)(res, {
@@ -109,7 +119,7 @@ const updateComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
-// get single comment 
+// get single comment
 const getSingleComment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const result = yield attendance_service_1.attendanceService.getSingleComment((_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id);
@@ -130,5 +140,6 @@ exports.attendanceController = {
     getAttendanceReport,
     getMissing,
     updateComment,
-    getSingleComment
+    getSingleComment,
+    updateAttendance,
 };

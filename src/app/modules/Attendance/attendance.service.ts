@@ -65,6 +65,16 @@ const createAttendance = async (payload: IAttendance) => {
   return updated;
 };
 
+// update Attendance
+
+const updateAttencance = async (
+  id: ObjectId,
+  payload: Partial<IAttendance>,
+) => {
+  const result = await Attendance.findByIdAndUpdate(id, payload, { new: true });
+  return result
+};
+
 // get last attendance
 
 const getLastAttendance = async (id: ObjectId) => {
@@ -245,11 +255,6 @@ async function createComment(payload: any) {
   return result;
 }
 
-const getComments = async () => {
-  const result = await attendanceModel.commentModel.find().populate("schoolId");
-  return result;
-};
-
 const deleteAttendanceService = async (id: string) => {
   const existBanana = await Attendance.deleteOne({ _id: id });
   return existBanana;
@@ -347,6 +352,16 @@ const getMissing = async (queryParams: any) => {
   return result;
 };
 
+// get all comment
+
+const getComments = async () => {
+  const result = await attendanceModel.commentModel
+    .find()
+    .sort({ createdAt: "asc" })
+    .populate("schoolId");
+  return result;
+};
+
 // update comment read comment
 
 const updateComment = async (id: any) => {
@@ -362,7 +377,9 @@ const updateComment = async (id: any) => {
 };
 
 const getSingleComment = async (id: any) => {
-  const getSingleComment = await attendanceModel.commentModel.findById(id).populate("schoolId")
+  const getSingleComment = await attendanceModel.commentModel
+    .findById(id)
+    .populate("schoolId");
   return getSingleComment;
 };
 
@@ -378,5 +395,6 @@ export const attendanceService = {
   getAreaReport,
   getMissing,
   updateComment,
-  getSingleComment
+  getSingleComment,
+  updateAttencance,
 };

@@ -9,6 +9,7 @@ attendanceRoutes.post("/", attendanceController.createAttendance);
 // get attendance all by filter
 
 attendanceRoutes.get("/", attendanceController.getAttendance);
+attendanceRoutes.patch("/:id", attendanceController.updateAttendance);
 attendanceRoutes.get("/report", attendanceController.getAttendanceReport);
 
 // get last attendacne
